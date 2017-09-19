@@ -75,12 +75,28 @@ gulp.task('watch', ['build'], () => {
     tasks: ['build'],
     env: {'NODE_ENV': 'development'}
   })
+  // start시 해당페이지 띄우려면 .html로만 가능한지..?
+  // , () => {
+  //   gulp.src('./dist-server').pipe(s
+  //     webserver({
+  //         livereload: true,
+  //         port: 5001, // 기존엔 5000, test로 추가한건 5001
+  //         open: true,
+  //         fallback: 'server.js', // gulp-webserver needs this for html5
+  //         // fallback: 'index.html', // gulp-webserver needs this for html5
+  //         // directoryListing: {
+  //         //     enable: true,
+  //         //     path:   'dist'
+  //         // }
+  //     })
+  //   );
+  // }
 });
 
-gulp.task('server', ['build'], () => {
+gulp.task('serve', ['build'], () => {
   nodemon({
     script: 'server.js',
-    watch: false,
+    watch: false, // why?
     env: {'NODE_ENV': 'production'}
   })
 });

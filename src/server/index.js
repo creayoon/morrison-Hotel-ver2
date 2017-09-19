@@ -5,6 +5,7 @@ import bodyParser from 'body-parser';
 import logger from 'winston';
 import apiRoutes from './api-routes';
 
+// cb is optional
 export default (cb) => {
   const app = express();
 
