@@ -10,32 +10,33 @@ export const MongoClient = process.env.NODE_ENV === 'test' ?
 const mongoConfig = JSON.parse(fs.readFileSync(config.mongodb, 'utf-8'));
 
 export class MongoDB {
-  static insert(cb, collection, ...values) {
+  static insert(collection, ...values) {
     if (!collection || !values) {
-      cb(new Error('Invalid argument exception'));
-      return;
+      return Promise.reject(new Error('Invalid argument exception'));
     }
 
-    MongoClient.connect(mongoConfig.url, (connErr, db) => {
-      if (connErr) {
-        cb(connErr);
-        return;
-      }
-
-      db.collection(collection).insertMany(values, (dbErr, r) => {
-        if (dbErr) {
-          cb(dbErr);
+    return new Promise((resolve, reject) => {
+      MongoClient.connect(mongoConfig.url, (err, db) => {
+        if (err) {
+          reject(err);
           return;
         }
+        resolve(db);
+      });
+    })
+    .then(db => {
+      db.collection(collection).insertMany(values, (err, r) => {
+        if (err) throw err; // eslint-disable-line curly
 
         if (values.length !== r.insertedCount) {
-          cb(new Error('insert fail'));
-          return;
+          throw new Error('insert fail');
         }
         db.close();
-
-        cb();
       });
+    })
+    .catch(err => {
+      // database error handling
+      Logger.error(err);
     });
   }
 }
