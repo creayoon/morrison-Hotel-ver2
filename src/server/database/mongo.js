@@ -1,14 +1,18 @@
-import {MongoClient} from 'mongodb';
+import mongodb from 'mongodb';
+import mongoMock from 'mongo-mock';
 import {Logger} from 'winston';
 import config from 'config';
 import fs from 'fs';
+
+export const MongoClient = process.env.NODE_ENV === 'test' ?
+    mongoMock.MongoClient : mongodb.MongoClient;
 
 const mongoConfig = JSON.parse(fs.readFileSync(config.mongodb, 'utf-8'));
 
 export class MongoDB {
   static insert(cb, collection, ...values) {
     if (!collection || !values) {
-      cb(new Error("Invalid argument exception"));
+      cb(new Error('Invalid argument exception'));
       return;
     }
 
@@ -25,7 +29,7 @@ export class MongoDB {
         }
 
         if (values.length !== r.insertedCount) {
-          cb(new Error("insert fail"));
+          cb(new Error('insert fail'));
           return;
         }
         db.close();

@@ -10,7 +10,7 @@
     "watch": "gulp watch",
     "build": "gulp build",
     "build-test": "gulp build:test",
-    "test": "BABEL_ENV=test NODE_ENV=test jest && BABEL_ENV=test NODE_ENV=test  npm run build-test && gulp test",
+    "test": "BABEL_ENV=test NODE_ENV=test jest && BABEL_ENV=test NODE_ENV=test npm run build-test && BABEL_ENV=test NODE_ENV=test gulp test",
     "start": "gulp server"
   },
   "jest": {
@@ -54,6 +54,7 @@
     "gulp-nodemon": "^2.2.1",
     "gulp-sourcemaps": "^2.6.0",
     "gulp-util": "^3.0.8",
+    "mongo-mock": "^2.5.0",
     "mongodb": "^2.2.31",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",

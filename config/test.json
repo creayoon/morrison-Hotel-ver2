@@ -1,0 +1,5 @@
+{
+  "name": "morrisson-test",
+  "port": 5000,
+  "mongodb": "config/mongodb.test.json"
+}
