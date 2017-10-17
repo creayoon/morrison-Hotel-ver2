@@ -1,5 +1,5 @@
 # example-project
-[wiki](https://github.com/ovekyc/node-example-project/wiki)
+[wiki](https://github.com/creayoon/morrison-Hotel-ver2.git/wiki)
 
 ## Quick Start
 
