@@ -9,9 +9,11 @@ const dataAlice = {
 	name: 'Alice',
 	age: '1'
 }
-// const dataBob = {
-// 	name: 'Bob',
-// 	age: '2'
+
+// const dataUser = {
+// 	social: '',
+// 	image: '',
+// 	name: ''
 // }
 
 // instance add later

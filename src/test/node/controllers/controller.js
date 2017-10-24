@@ -24,7 +24,7 @@ test('Add Topic', t => {
     console.log('data:::', data);
     
     t.equal(res.statusCode, expected.status, 'should be same status');
-    t.equal(data, expected.body, 'should be same string');
+    t.equal(data.text, expected.body.text, 'should be same string');
     t.end();
   });
 });

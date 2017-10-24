@@ -4,3 +4,4 @@ require('source-map-support').install();
 import './server';
 import './controllers/controller';
 import './database/mongo';
+import './models/user';

@@ -3,7 +3,8 @@ import mongoMock from 'mongo-mock';
 import config from 'config';
 import fs from 'fs';
 
-export const MongoClient = process.env.NODE_ENV === 'test' ? mongoMock.MongoClient : mongodb.MongoClient;
+export const MongoClient = 
+process.env.NODE_ENV === 'test' ? mongoMock.MongoClient : mongodb.MongoClient;
 
 const mongoConfig = JSON.parse(fs.readFileSync(config.mongodb, 'utf-8'));
 // 서버가 돌기 전이라서 sync걸어도 좋아서 sync씀
