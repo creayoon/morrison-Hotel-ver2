@@ -5,7 +5,7 @@ import RoomModel from '../../../server/models/room';
 // RoomModel test
 test('RoomModel with valid argument test', t => {
   try {
-    var room1 = new RoomModel();
+    new RoomModel(); // eslint-disable-line no-new
     t.fail();
   } catch (err) {
     t.skip('success');
@@ -18,7 +18,7 @@ test('RoomModel with valid argument test', t => {
   const expected = {
     roomNumber: '201',
     roomType: 'Deluxe',
-    facility: ['labtop', 'television']
+    facility: ['labtop', 'television'],
     roomSize: '33m',
     bedSize : 'Queen',
     availableGuest: 4,

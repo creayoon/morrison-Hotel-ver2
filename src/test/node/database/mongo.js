@@ -8,7 +8,7 @@ const collection = 'testCollection';
 const dataAlice = {
 	name: 'Alice',
 	age: '1'
-}
+};
 
 // const dataUser = {
 // 	social: '',
@@ -25,6 +25,6 @@ test('MongoDB insert one', t => {
 		}
 		t.end();
 	}, collection, dataAlice);
-})
+});
 
 

@@ -1,14 +1,14 @@
 export default class {
-	constructor(room, breakfast, dinner, citypass, price, date) {
-		this.room = room;					// string (objectId)
+	constructor(room, breakfast, dinner, citypass, price, date) { // eslint-disable-line max-params
+		this.room = room;								// string (objectId)
 		this.breakfast = breakfast;			// Boolean
-		this.dinner = dinner;				// Boolean
-		this.citypass = citypass;			// Boolean
-		this.price = price;					// Number
-		this.date = date;					// String (Date)
+		this.dinner = dinner;						// Boolean
+		this.citypass = citypass;				// Boolean
+		this.price = price;							// Number
+		this.date = date;								// String (Date)
 
 		this.validate();
-	}
+	} 
 
 	validate() {
 		// type check
