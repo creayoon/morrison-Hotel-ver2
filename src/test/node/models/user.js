@@ -18,11 +18,15 @@ test('UserModel with invalid argument test', t => {
 test('UserModel with valid argument test', t => {
   const expected = {
     name: 'alice',
-    social: 'some-social',
-    image: 'http://some.usl.here.com'
+    // social: 'some-social',
+    // image: 'http://some.usl.here.com',
+    social: 'facebook',
+    image: 'http://mblogthumb3.phinf.naver.net/20150829_146/lhjing7_1440828589438zQNHt_GIF/13.gif?type=w2'
   };
 
-  const user = new UserModel('alice');
+  const user = new UserModel('alice', 'facebook', 'http://mblogthumb3.phinf.naver.net/20150829_146/lhjing7_1440828589438zQNHt_GIF/13.gif?type=w2');
   t.equal(expected.name, user.name, 'should be same name');
+  t.equal(expected.social, user.social, 'should be same social');
+  t.equal(expected.image, user.image, 'should be same image');
   t.end();
 });
