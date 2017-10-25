@@ -32,5 +32,3 @@ test('RoomModel with valid argument test', t => {
   t.equal(expected.defaultPrice, room.defaultPrice, 'should be same price');
   t.end();
 });
-
-// Error: roomType is not a String

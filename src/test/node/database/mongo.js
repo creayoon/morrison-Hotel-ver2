@@ -6,15 +6,15 @@ import {MongoDB/*, MongoClient*/} from '../../../server/database/mongo';
 const collection = 'testCollection';
 
 const dataAlice = {
-	name: 'Alice',
-	age: '1'
+	name: 'alice'
+	// age: '1'
 };
 
-// const dataUser = {
-// 	social: '',
-// 	image: '',
-// 	name: ''
-// }
+const dataUser = {
+	name: 'minions Bob',
+  social: 'facebook',
+  image: 'https://i.pinimg.com/736x/3e/0b/d9/3e0bd971ef4434d9354ee6dde37aed88--minions-cartoon-despicable-minions.jpg' // eslint-disable-line max-len
+}
 
 // instance add later
 
@@ -24,7 +24,14 @@ test('MongoDB insert one', t => {
 			t.fail();
 		}
 		t.end();
-	}, collection, dataAlice);
+	}, collection, dataUser);
 });
+
+test('MongoDB delete one', t => {
+  MongoDB.delete((err) => {
+    if (err) t.fail();
+    t.end();
+  }, collection, dataAlice);
+})
 
 

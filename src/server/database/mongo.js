@@ -30,7 +30,7 @@ export class MongoDB {
 
 				// data가 깨지거나 했을 경우를 대비
 				if (values.length !== res.insertedCount) {
-					cb(new Error('fail'));
+					cb(new Error('fail insert'));
 					// 원래는 rollback코드도 추가하는것이 좋다
 					return;
 				}
@@ -40,8 +40,44 @@ export class MongoDB {
 				cb();
 			});
 		});
-
-		
 	}
+
+  static delete(cb, collection, ...values) {
+    if (!collection || !values) {
+      cb(new Error('error'));
+      return;
+    }
+
+    MongoClient.connect(mongoConfig.url, (connErr, db) => {
+      if (connErr) {
+        cb(connErr);
+        return;
+      }
+
+      console.log('remove query:::', values);
+
+      // delete, remove 차이점 찾기
+      // query 쓰는 방법 익히기
+      // db.collection(collection).deleteMany(values, (dbErr, res) => {
+      db.collection(collection).remove(values, (dbErr, res) => {
+        if (dbErr) {
+          cb(dbErr);
+          return;
+        }
+
+        // delete error 대비
+        if (values.length !== res.deletedCount) {
+          cb(new Error('fail delete'));
+          // 추후 delete rollback
+          // mongo에서 기본 제공하지 않음 -> 삭제하기 전 복사해뒀다가 다시 되살리는 방식으로 rollback해야 함
+          return;
+        }
+
+        db.close();
+
+        cb();
+      });
+    });
+  }
 }
 
