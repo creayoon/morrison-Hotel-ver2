@@ -6,9 +6,9 @@ test('Add Topic', t => {
   const expected = {
     status: 200,
     // body: 'Hello world!'
-    body: { 
-      header: { token: 12345 }, 
-      text: 'Hello world!' 
+    body: {
+      header: { token: 12345 },
+      text: 'Hello world!'
     }
 
   };
@@ -20,9 +20,10 @@ test('Add Topic', t => {
   const res = httpMocks.createResponse();
 
   Controller.get(req, res, () => {
-    const data = res._getData();
-    console.log('data:::', data);
-    
+    // const data = res._getData(); // no-underscore-dangle
+    const data = res.getData();
+    // console.log('data:::', data);
+
     t.equal(res.statusCode, expected.status, 'should be same status');
     t.equal(data.text, expected.body.text, 'should be same string');
     t.end();

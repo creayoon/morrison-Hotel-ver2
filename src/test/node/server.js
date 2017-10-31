@@ -13,13 +13,9 @@ test('application server', t => {
   server = startServer(onServer);
 });
 
-
-
-/* 
+/*
 test([name], [opts], cb)
 
 t.ok(value, msg)
 t.end(err)
-
 */
-

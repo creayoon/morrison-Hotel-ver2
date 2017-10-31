@@ -7,6 +7,7 @@ test('UserModel with invalid argument test', t => {
     new UserModel(); // eslint-disable-line no-new
     new UserModel(1); // eslint-disable-line no-new
     new UserModel({}); // eslint-disable-line no-new
+    new UserModel(''); // eslint-disable-line no-new
     t.fail();
   } catch (err) {
     t.skip('success');

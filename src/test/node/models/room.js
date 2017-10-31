@@ -20,7 +20,7 @@ test('RoomModel with valid argument test', t => {
     roomType: 'Deluxe',
     facility: ['labtop', 'television'],
     roomSize: '33m',
-    bedSize : 'Queen',
+    bedSize: 'Queen',
     availableGuest: 4,
     acceptChild: 2,
     blueprint: 'http://some.blueprint.here.com',
