@@ -7,7 +7,6 @@ const collection = 'testCollection';
 
 const dataAlice = {
   name: 'alice'
-  // age: '1'
 };
 
 const dataUser = {
@@ -15,8 +14,6 @@ const dataUser = {
   social: 'facebook',
   image: 'https://i.pinimg.com/736x/3e/0b/d9/3e0bd971ef4434d9354ee6dde37aed88--minions-cartoon-despicable-minions.jpg' // eslint-disable-line max-len
 };
-
-// instance add later
 
 test('MongoDB insert one', t => {
   MongoDB.insert((err) => {
@@ -26,13 +23,6 @@ test('MongoDB insert one', t => {
     t.end();
   }, collection, dataUser);
 });
-
-// test('MongoDB delete one', t => {
-//   MongoDB.delete((err) => {
-//     if (err) t.fail();
-//     t.end();
-//   }, collection, dataUser);
-// });
 
 test('MongoDB delete one', t => {
   MongoDB.insert((insertErr) => {
