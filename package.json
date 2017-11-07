@@ -72,7 +72,6 @@
     "babel-core": "^6.24.1",
     "babel-eslint": "^7.2.3",
     "babel-plugin-__coverage__": "^11.0.0",
-    "babel-preset-typescript": "^7.0.0-alpha.19",
     "enzyme": "^2.9.1",
     "isuuid": "^0.1.0",
     "jest": "^21.0.2",
