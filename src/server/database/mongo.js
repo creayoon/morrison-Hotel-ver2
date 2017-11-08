@@ -68,22 +68,27 @@ export class MongoDB {
       });
     })
     .then(db => {
-      db.collection(collection).deleteMany(values[0], (dbErr, res) => {
+      // db.collection(collection).deleteMany(values, (dbErr, res) => {
+      db.collection(collection).deleteMany(values, (dbErr) => {
         if (dbErr) {
           db.close();
           // cb(dbErr);
           throw dbErr;
-          // return; //
+          // return;
         }
 
         // delete error 대비
-        if (values.length !== res.deletedCount) {
-          db.close();
-          throw new Error('fail delete');
+        // if (values.length !== res.deletedCount) {
+        //   db.close();
+        //   Logger.log('deletemany:::::::', values);
+        //   Logger.log('deletemany res:::::::', res); // not a function?
+          
+        //   throw new Error('fail delete');
+        //   // .idea 폴더 용도가 뭔지?
+        //   // 추후 delete rollback, mongo에서 기본 제공하지 않음, 일단 pass
+        //   // return;
+        // }
 
-          // 추후 delete rollback, mongo에서 기본 제공하지 않음, 일단 pass
-          // return;
-        }
         db.close();
         // cb();
       });
