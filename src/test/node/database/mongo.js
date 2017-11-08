@@ -5,9 +5,9 @@ import { MongoDB } from '../../../server/database/mongo';
 
 const collection = 'testCollection';
 
-const dataAlice = {
-  name: 'alice'
-};
+// const dataAlice = {
+//   name: 'alice'
+// };
 
 const dataUser = {
   name: 'minions Bob',
@@ -24,14 +24,14 @@ test('MongoDB insert one', t => {
   }, collection, dataUser);
 });
 
-test('MongoDB delete one', t => {
-  MongoDB.insert((insertErr) => {
-    if (insertErr) {
-      t.fail();
-    }
-    MongoDB.delete((deleteErr) => {
-      if (deleteErr) t.fail();
-      t.end();
-    }, collection, dataAlice);
-  }, collection, dataAlice);
-});
+// test('MongoDB delete one', t => {
+//   MongoDB.insert((insertErr) => {
+//     if (insertErr) {
+//       t.fail();
+//     }
+//     MongoDB.delete((deleteErr) => {
+//       if (deleteErr) t.fail();
+//       t.end();
+//     }, collection, dataAlice);
+//   }, collection, dataAlice);
+// });
