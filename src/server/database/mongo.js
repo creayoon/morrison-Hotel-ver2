@@ -77,11 +77,18 @@ export class MongoDB {
           // return;
         }
 
+        // deleteMany에서 알아서 for문 도는데 map 왜 쓰기로 했었지...?
+        values.map(data => {
+          console.log('data::::', data) // eslint-disable-line no-console
+        })
+        // test코드짤때 console 못찍어봐서 어려워..
+
+
         // delete error 대비
         // if (values.length !== res.deletedCount) {
         //   db.close();
         //   Logger.log('deletemany:::::::', values);
-        //   Logger.log('deletemany res:::::::', res); // not a function?
+        //   Logger.log('deletemany res:::::::', res); // Logger.log 쓰면 not a function이라면서 계속 에러나..ㅜ
           
         //   throw new Error('fail delete');
         //   // .idea 폴더 용도가 뭔지?

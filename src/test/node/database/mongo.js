@@ -6,7 +6,15 @@ import { MongoDB } from '../../../server/database/mongo';
 const collection = 'testCollection';
 
 const dataAlice = {
-  name: 'alice'
+  name: 'alice',
+  name2: '222',
+  name3: '333',
+  name4: '444',
+  name5: '555',
+  name6: '666',
+  name7: '777',
+  name8: '888',
+  name9: '999'
 };
 
 const dataUser = {
@@ -15,7 +23,7 @@ const dataUser = {
   image: 'https://i.pinimg.com/736x/3e/0b/d9/3e0bd971ef4434d9354ee6dde37aed88--minions-cartoon-despicable-minions.jpg' // eslint-disable-line max-len
 };
 
-test('MongoDB insert one', t => {
+test('MongoDB insert many', t => {
   MongoDB.insert((err) => {
     if (err) {
       t.fail();
@@ -24,7 +32,7 @@ test('MongoDB insert one', t => {
   }, collection, dataUser);
 });
 
-test('MongoDB delete one', t => {
+test('MongoDB delete many', t => {
   MongoDB.insert((insertErr) => {
     if (insertErr) {
       t.fail();
