@@ -26,29 +26,36 @@ export class MongoDB {
         resolve(db);
       });
     })
-    .then(db => {
+    .then(db => new Promise((resolve, reject) => {
       db.collection(collection).insertMany(values, (dbErr, res) => {
+        db.close();
+
         if (dbErr) {
-          db.close(); // 여기서 db.close 안해줘도 됨? yc브랜치에 없음
-          throw dbErr;
-          // new Error(dbErr);
-          // 그냥 throw dbErr 했을떄랑 차이점?
-          // 위에서 error가 이미 생성되서 new 할 필요 없어서 그냥 throw?
-          // return;
+          reject(dbErr);
+          return;
         }
 
         // data가 깨지거나 했을 경우를 대비
         if (values.length !== res.insertedCount) {
-          throw new Error('fail insert');
-          // return;
+          reject(new Error('fail insert'));
+          return;
         }
 
-        db.close();
-        // cb();
+        resolve(res.insertedCount);
       });
-    })
+    }))
+    // .then(db => {
+    //   const result = db.collection(collection).insertMany(values);
+    //   if (result == null) {
+    //     throw new Error('db error');
+    //   } else if (values.length !== result.insertedCount) {
+    //     throw new Error('fail insert');
+    //   }
+    //   return result.insertedCount;
+    // })
     .catch(connErr => {
-      Logger.error('insert Error:::', connErr);
+      //Logger.error('insert Error:::', connErr);
+      throw connErr;
     });
   }
 

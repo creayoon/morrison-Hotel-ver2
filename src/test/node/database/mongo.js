@@ -24,12 +24,15 @@ const dataUser = {
 };
 
 test('MongoDB insert many', t => {
-  MongoDB.insert((err) => {
-    if (err) {
-      t.fail();
-    }
-    t.end();
-  }, collection, dataUser);
+  MongoDB.insert(collection, dataUser, dataAlice)
+      .then(count => {
+        t.equal(2, count, 'should be same number');
+        t.end();
+      })
+      .catch(err => {
+        t.fail(err);
+        t.end();
+      });
 });
 
 test('MongoDB delete many', t => {
@@ -39,6 +42,7 @@ test('MongoDB delete many', t => {
     }
     MongoDB.delete((deleteErr) => {
       if (deleteErr) t.fail();
+      console.log('here');
       t.end();
     }, collection, dataAlice);
   }, collection, dataAlice);

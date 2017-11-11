@@ -20,8 +20,7 @@ test('Add Topic', t => {
   const res = httpMocks.createResponse();
 
   Controller.get(req, res, () => {
-    // const data = res._getData(); // no-underscore-dangle
-    const data = res.getData();
+    const data = res._getData(); // eslint-disable-line no-underscore-dangle
     // console.log('data:::', data);
 
     t.equal(res.statusCode, expected.status, 'should be same status');
