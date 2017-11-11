@@ -77,7 +77,7 @@ gulp.task('watch', ['build'], () => {
   })
 });
 
-gulp.task('server', ['build'], () => {
+gulp.task('serve', ['build'], () => {
   nodemon({
     script: 'server.js',
     watch: false,

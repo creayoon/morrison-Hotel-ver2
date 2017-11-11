@@ -4,7 +4,9 @@ import path from 'path';
 import bodyParser from 'body-parser';
 import logger from 'winston';
 import apiRoutes from './api-routes';
+// import {MongoDB} from './database/mongo';
 
+// cb is optional
 export default (cb) => {
   const app = express();
 
@@ -30,6 +32,11 @@ export default (cb) => {
     /* eslint-enable */
     res.status(500).send('Server error');
   });
+
+  // MongoDB.insert((err) => {
+  //   if (err) console.log(err);
+  //   else console.log('-----success');
+  // }, 'book', {name: 'alice'}, {name: 'bob'});
 
   process.on('uncaughtException', evt => {
     console.log('uncaughtException: ', evt); // eslint-disable-line no-console
