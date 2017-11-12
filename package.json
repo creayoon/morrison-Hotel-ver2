@@ -10,7 +10,7 @@
     "watch": "gulp watch",
     "build": "gulp build",
     "build-test": "gulp build:test",
-    "test": "BABEL_ENV=test NODE_ENV=test gulp test",
+    "test": "BABEL_ENV=test NODE_ENV=test npm run build-test && BABEL_ENV=test NODE_ENV=test gulp test",
     "start": "gulp serve"
   },
   "jest": {

@@ -18,21 +18,21 @@ export default class UserController {
     const {data} = req.query;
 
     res.send({data});
-    cb(); 
+    cb();
   }
 
   static put(req, res, cb) {
     const {data} = req.query;
 
     res.send({data});
-    cb(); 
+    cb();
   }
 
   static delete(req, res, cb) {
     const {data} = req.query;
 
     res.send({data});
-    cb(); 
+    cb();
   }
 
   // 어떻게 해야 하나..
@@ -40,7 +40,7 @@ export default class UserController {
     // const {data} = req.query;
 
     // res.send({data});
-    cb(); 
+    cb();
   }
 
 }

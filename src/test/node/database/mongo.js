@@ -42,7 +42,7 @@ test('MongoDB delete many', t => {
     }
     MongoDB.delete((deleteErr) => {
       if (deleteErr) t.fail();
-      console.log('here');
+      // console.log('here');
       t.end();
     }, collection, dataAlice);
   }, collection, dataAlice);
