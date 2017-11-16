@@ -22,23 +22,18 @@ export default (cb) => {
 	
   app.use('/javascripts', express.static(path.join(__dirname, '../../dist-client/javascripts')));
 	app.use('/api', apiRoutes);
-	// console.log('__dirname', __dirname); // /Users/Jyoon/Documents/morrison_Hotel_ver2/dist-server/server
 	
-	// swagger
-	// app.use('/swagger-ui', express.static(path.join(__dirname, '../../node_modules/swagger-ui-dist')));
-	// app.use('/swagger', function (req, res) {
-	// 	// console.log('swagger res::::::', res.redirect);
-	// 	res.redirect('/swagger-ui?url=/src/server/api/swagger.json');
-	// });
-
-	// test
-	app.use('/swagger', function(req, res) {
+	// test: it works!
+	app.use('/api/swagger.json', function(req, res) {
 		res.json(require('./api/swagger.json'));
 	});
-	
-	// app.use('/swagger', function(req, res) {
-	// 	res.json(require('/api/swagger.yaml'));
-	// });
+	// console.log('__dirname', __dirname); // /Users/Jyoon/Documents/morrison_Hotel_ver2/dist-server/server
+
+	// swagger
+	app.use('/swagger-ui', express.static(path.join(__dirname, '../../node_modules/swagger-ui-dist')));
+	app.use('/swagger', function (req, res) {
+		res.redirect('/swagger-ui?url=/api/swagger.json');
+	});
 
 	app.use('/swagger-editor', express.static(path.join(__dirname, '../../node_modules/swagger-editor-dist/editor')));
 	app.use('/swagger/edit', function (req, res) {
