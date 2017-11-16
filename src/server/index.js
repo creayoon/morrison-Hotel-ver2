@@ -4,7 +4,10 @@ import path from 'path';
 import bodyParser from 'body-parser';
 import logger from 'winston';
 import apiRoutes from './api-routes';
-// import {MongoDB} from './database/mongo';
+// import { MongoDB } from './database/mongo';
+
+// swagger
+
 
 // cb is optional
 export default (cb) => {
@@ -16,9 +19,34 @@ export default (cb) => {
     logger.info(`Request - ${req.method} - PATH : ${req.originalUrl} - ${new Date()}`);
     next();
   });
-
+	
   app.use('/javascripts', express.static(path.join(__dirname, '../../dist-client/javascripts')));
-  app.use('/api', apiRoutes);
+	app.use('/api', apiRoutes);
+	// console.log('__dirname', __dirname); // /Users/Jyoon/Documents/morrison_Hotel_ver2/dist-server/server
+	
+	// swagger
+	// app.use('/swagger-ui', express.static(path.join(__dirname, '../../node_modules/swagger-ui-dist')));
+	// app.use('/swagger', function (req, res) {
+	// 	// console.log('swagger res::::::', res.redirect);
+	// 	res.redirect('/swagger-ui?url=/src/server/api/swagger.json');
+	// });
+
+	// test
+	app.use('/swagger', function(req, res) {
+		res.json(require('./api/swagger.json'));
+	});
+	
+	// app.use('/swagger', function(req, res) {
+	// 	res.json(require('/api/swagger.yaml'));
+	// });
+
+	app.use('/swagger-editor', express.static(path.join(__dirname, '../../node_modules/swagger-editor-dist/editor')));
+	app.use('/swagger/edit', function (req, res) {
+		console.log('swagger res::::::', res);
+		
+		res.redirect('/swagger-editor?url=/api/swagger.json');
+	});
+
   app.get('*', (req, res) => {
     if (!res.headersSent) // eslint-disable-line curly
       res.sendFile(path.join(__dirname, '../../dist-client/index.html'));

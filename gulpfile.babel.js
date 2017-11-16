@@ -25,7 +25,7 @@ gulp.task('build:static', ['clean:client'], () => {
 
 gulp.task('build:client', ['clean:client'], () => compileClientJS(['./src/client/javascripts/bundle.js'], 'bundle.js', './dist-client/javascripts'));
 gulp.task('build:server', ['clean:server'], () => compileNodeJS('src/{server,front}/**/*.js', './dist-server'));
-gulp.task('build', ['build:client', 'build:server', 'build:static']);
+gulp.task('build', ['build:client', 'build:server', 'build:static', 'build:test-json']); // json 빌드 추가함
 
 gulp.task('build:test-server', ['clean:test'], () => compileNodeJS(['src/!(client)/!(browser)/**/*.js', 'src/!(client)/*.js'], './dist-test'));
 gulp.task('build:test-json', ['clean:test'], () => gulp.src('src/**/*.json')
