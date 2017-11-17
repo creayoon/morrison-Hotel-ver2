@@ -7,10 +7,12 @@ import { Logger } from 'winston';
 export const MongoClient =
     process.env.NODE_ENV === 'test' ? mongoMock.MongoClient : mongodb.MongoClient;
 
-const mongoConfig = JSON.parse(fs.readFileSync(config.mongodb, 'utf-8'));
 // 서버가 돌기 전이라서 sync걸어도 좋아서 sync씀
+const mongoConfig = JSON.parse(fs.readFileSync(config.mongodb, 'utf-8'));
 
 export class MongoDB {
+	
+	// C: insertMany
   static insert(collection, ...values) {
     if (!collection || !values) {
       return Promise.reject(new Error('Invalid argument exception'));
@@ -62,6 +64,73 @@ export class MongoDB {
     });
   }
 
+	// R: find
+  static read(collection, ...values) {
+    if (!collection || !values) {
+      return new Promise.reject(new Error('Error'));
+    }
+
+    return new Promise((resolve, reject) => {
+      MongoClient.connect(mongoConfig.url, (connErr, db) => {
+        if (connErr) {
+          db.close();
+          reject(connErr);
+          return;
+        }
+        resolve(db);
+      });
+    })
+    .then(db => {
+      db.collection(collection).find();
+    })
+    .catch(connErr => {
+      Logger.error('delete Error:::', connErr);
+    });
+  }
+
+	// U: updateMany
+  static update(collection, ...values) {
+    if (!collection || !values) {
+      return Promise.reject(new Error('Invalid argument exception'));
+    }
+
+    return new Promise((resolve, reject) => {
+      MongoClient.connect(mongoConfig.url, (connErr, db) => {
+        if (connErr) {
+          reject(connErr);
+          return;
+        }
+        resolve(db);
+      });
+    })
+    .then(db => {
+      Promise((resolve, reject) => {
+        db.collection(collection).updateMany(values, (dbErr, res) => {
+          db.close();
+
+          // err  
+          if (dbErr) {
+            reject(dbErr);
+            return;
+          }
+
+          // data가 깨지거나 했을 경우를 대비
+          if (values.length !== res.insertedCount) {
+            reject(new Error('fail insert'));
+            return;
+          }
+
+          resolve(res.insertedCount);
+        });
+      });
+    })
+    .catch(connErr => {
+      // Logger.error('insert Error:::', connErr);
+      throw connErr;
+    });
+  }
+
+	// D: deleteMany
   static delete(collection, ...values) {
     if (!collection || !values) {
       return new Promise.reject(new Error('Error'));
@@ -91,9 +160,6 @@ export class MongoDB {
         values.map(data => {
           // console.log('data::::', data); // eslint-disable-line no-console
         });
-        // test코드짤때 console 못찍어봐서 어려워..
-
-
         // delete error 대비
         // if (values.length !== res.deletedCount) {
         //   db.close();
@@ -114,7 +180,9 @@ export class MongoDB {
       Logger.error('delete Error:::', connErr);
     });
   }
+
 }
+
 
 // promise 수정 전 코드
   // static insert(cb, collection, ...values) {

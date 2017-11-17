@@ -8,6 +8,14 @@ export default class TopicController {
     res.send(data);
     cb();
   }
+
+  // 어떻게 해야 하나..
+  static clear(req, res, cb) {
+    // const {data} = req.query;
+
+    // res.send({data});
+    cb();
+  }
 }
 
 // function test (a:Number, b:String) {
