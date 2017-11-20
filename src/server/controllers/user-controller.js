@@ -14,27 +14,39 @@ export default class UserController {
 	  cb();
 	}
 
-	static post(req, res, cb) {
+	static post(req, res) {
 		const { body } = req;
-
-		const essentialFields = ['name', 'social', 'image'];
-		const isValid = essentialFields
-			.map(fieldName => {
-				if (!body.hasOwnProperty(fieldName)) return false;
-				if (typeof body[fieldName] !== 'string') return false;
-				return true;
-			})
-			.reduce((a, b) => a & b)
-
-		if (!isValid) {
-			res.status(400).send('Need essential argument');
-			cb();
-			return;
-		}
-
-		UserService.addUser(body, res, cb);
 		
-		// res.send(body);
+		return new Promise((resolve, reject) => {
+			const essentialFields = ['name', 'social', 'image'];
+			const isValid = essentialFields
+				.map(fieldName => {
+					if (!body.hasOwnProperty(fieldName)) return false;
+					if (typeof body[fieldName] !== 'string') return false;
+					return true;
+				})
+				.reduce((a, b) => a & b)
+
+			if (!isValid) {
+				// res.status(400).send('Need essential argument'); // deprecated
+				res.send(400, 'Need essential argument');
+				reject(err); // 이렇게 써도 되는지 확인
+				// return;
+			} else {
+				res.send(200, body);
+				resolve(res);
+			}
+		}).then(postRes => {
+			console.log('postRes::::', postRes);
+
+			if (postRes.statusCode === 200) {
+				console.log('postRes.statusCode::::', postRes.statusCode);
+			
+				UserService.addUser(body, res);
+			}
+		})
+		
+		
 		// cb();
 	}
 

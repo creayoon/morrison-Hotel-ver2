@@ -23,7 +23,7 @@ export default (cb) => {
   app.use('/javascripts', express.static(path.join(__dirname, '../../dist-client/javascripts')));
 	app.use('/api', apiRoutes);
 	
-  // swagger default path
+  // swagger default path (do not remove) 
   app.use('/api/swagger.json', function(req, res) {
 		res.json(require('./api/swagger.json'));
   });
