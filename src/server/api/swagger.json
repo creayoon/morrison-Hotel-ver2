@@ -25,7 +25,28 @@
       "description" : "Access to room info"
     } ],
     "paths" : {
-      "/user" : {
+      "/users" : {
+        "get" : {
+          "tags" : [ "user" ],
+          "summary" : "Get users list",
+          "description" : "This can only be done by the logged in user.",
+          "operationId" : "getUserList",
+          "produces" : [ "application/json", "application/xml" ],
+          "parameters" : [ {
+            "in" : "body",
+            "name" : "body",
+            "description" : "Created user object",
+            "required" : true,
+            "schema" : {
+              "$ref" : "#/definitions/User"
+            }
+          } ],
+          "responses" : {
+            "default" : {
+              "description" : "successful operation"
+            }
+          }
+        },
         "post" : {
           "tags" : [ "user" ],
           "summary" : "Create user",
@@ -48,7 +69,7 @@
           }
         }
       },
-      "/user/{id}" : {
+      "/users/{id}" : {
         "get" : {
           "tags" : [ "user" ],
           "summary" : "Get user by Id",
@@ -129,29 +150,6 @@
           }
         }
       },
-      "/userlist" : {
-        "get" : {
-          "tags" : [ "user" ],
-          "summary" : "Get user list",
-          "description" : "This can only be done by the logged in user.",
-          "operationId" : "getUserList",
-          "produces" : [ "application/json", "application/xml" ],
-          "parameters" : [ {
-            "in" : "body",
-            "name" : "body",
-            "description" : "Created user object",
-            "required" : true,
-            "schema" : {
-              "$ref" : "#/definitions/User"
-            }
-          } ],
-          "responses" : {
-            "default" : {
-              "description" : "successful operation"
-            }
-          }
-        }
-      },
       "/username/{username}" : {
         "get" : {
           "tags" : [ "user" ],
@@ -181,7 +179,28 @@
           }
         }
       },
-      "/room" : {
+      "/rooms" : {
+        "get" : {
+          "tags" : [ "room" ],
+          "summary" : "Create room",
+          "description" : "This can only be done by the logged in room.",
+          "operationId" : "get Room list",
+          "produces" : [ "application/json", "application/xml" ],
+          "parameters" : [ {
+            "in" : "body",
+            "name" : "body",
+            "description" : "Created user object",
+            "required" : true,
+            "schema" : {
+              "$ref" : "#/definitions/Room"
+            }
+          } ],
+          "responses" : {
+            "default" : {
+              "description" : "successful operation"
+            }
+          }
+        },
         "post" : {
           "tags" : [ "room" ],
           "summary" : "Create room",
@@ -204,12 +223,12 @@
           }
         }
       },
-      "/room/{id}" : {
+      "/rooms/{id}" : {
         "get" : {
           "tags" : [ "room" ],
           "summary" : "Get room by Id",
           "description" : "This can only be done by the logged in room.",
-          "operationId" : "updateRoom",
+          "operationId" : "getRoomList",
           "produces" : [ "application/json", "application/xml" ],
           "parameters" : [ {
             "name" : "id",
@@ -284,29 +303,6 @@
             },
             "404" : {
               "description" : "Room not found"
-            }
-          }
-        }
-      },
-      "/roomlist" : {
-        "get" : {
-          "tags" : [ "room" ],
-          "summary" : "Get room list",
-          "description" : "This can only be done by the logged in room.",
-          "operationId" : "getRoom",
-          "produces" : [ "application/json", "application/xml" ],
-          "parameters" : [ {
-            "in" : "body",
-            "name" : "body",
-            "description" : "Created user object",
-            "required" : true,
-            "schema" : {
-              "$ref" : "#/definitions/Room"
-            }
-          } ],
-          "responses" : {
-            "default" : {
-              "description" : "successful operation"
             }
           }
         }

@@ -23,17 +23,20 @@ export default (cb) => {
   app.use('/javascripts', express.static(path.join(__dirname, '../../dist-client/javascripts')));
 	app.use('/api', apiRoutes);
 	
-	// swagger
-	app.use('/api/swagger.json', function(req, res) {
+  // swagger default path
+  app.use('/api/swagger.json', function(req, res) {
 		res.json(require('./api/swagger.json'));
-	});
+  });
+  
+  // swagger-ui
 	app.use('/swagger-ui', express.static(path.join(__dirname, '../../node_modules/swagger-ui-dist')));
-	app.use('/swagger', function (req, res) {
+	app.use('/swagger', (req, res) => {
 		res.redirect('/swagger-ui?url=/api/swagger.json');
 	});
 
-	app.use('/swagger-editor', express.static(path.join(__dirname, '../../node_modules/swagger-editor-dist/editor')));
-	app.use('/swagger/edit', function (req, res) {
+  // swagger-editor
+	app.use('/swagger-editor', express.static(path.join(__dirname, '../../node_modules/swagger-editor-dist')));
+	app.use('/editor', (req, res) => {
 		res.redirect('/swagger-editor?url=/api/swagger.json');
 	});
 

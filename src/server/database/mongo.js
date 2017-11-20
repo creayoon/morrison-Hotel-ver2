@@ -11,13 +11,13 @@ export const MongoClient =
 const mongoConfig = JSON.parse(fs.readFileSync(config.mongodb, 'utf-8'));
 
 export class MongoDB {
-	
+
 	// C: insertMany
   static insert(collection, ...values) {
     if (!collection || !values) {
       return Promise.reject(new Error('Invalid argument exception'));
-    }
-
+		}
+		
     return new Promise((resolve, reject) => {
       MongoClient.connect(mongoConfig.url, (connErr, db) => {
         if (connErr) {
@@ -28,7 +28,7 @@ export class MongoDB {
       });
     })
     .then(db => {
-      Promise((resolve, reject) => {
+      return new Promise((resolve, reject) => {
         db.collection(collection).insertMany(values, (dbErr, res) => {
           db.close();
 
@@ -180,6 +180,9 @@ export class MongoDB {
       Logger.error('delete Error:::', connErr);
     });
   }
+
+	// clear
+
 
 }
 

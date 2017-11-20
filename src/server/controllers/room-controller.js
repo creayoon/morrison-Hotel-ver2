@@ -1,10 +1,10 @@
 export default class RoomController {
-	// static get(req, res, cb) {
-	//   const {data} = req.query;
+	static get(req, res, cb) {
+	  const {data} = req.query;
 
-	//   res.send({data});
-	//   cb();
-	// }
+	  res.send({data});
+	  cb();
+	}
 
 	static post(req, res, cb) {
 			const {data} = req.query;
@@ -32,20 +32,6 @@ export default class RoomController {
 
 		res.send({data});
 		cb();
-	}
-
-	static roomlist(req, res, cb) {
-			const {data} = req.query;
-	
-			res.send({data});
-			cb();
-	}
-
-	static roomname(req, res, cb) {
-			const {data} = req.query;
-	
-			res.send({data});
-			cb();
 	}
 
 }
