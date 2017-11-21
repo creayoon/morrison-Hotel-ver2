@@ -16,66 +16,69 @@ export default class UserController {
 
 	// post: input data validation chk (누락된 정보가 없도록 모든 필드 확인)
 	static post(req, res) {
-		const { body } = req;
+		// refactoring 후 에러나는 코드
+		// 에러메시지: UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 2): TypeError: Cannot read property 'validCheck' of undefined
 
-		return new Promise((resolve, reject) => {
-			// valid check
-			console.log('body::::::', body)
-			this.validCheck(body)
-			.then(isValid => {
-				console.log('isValid::::::', isValid)
-			
-				if (!isValid) {
-					res.send(400, 'Need essential argument');
-					// reject(err); // 이렇게 써도 되는지 확인, 안되는듯, 여기서 UnhandledPromiseRejectionWarning: Unhandled promise rejection 뜨는거 같애, 그럼 reject은 어디서 해주나?
-				} else {
-					res.send(200, body);
-					resolve(res);
-				}
-			})
-			.catch(err => {
-				console.log("Promise Rejected", err);
-	 		});
-		})
-		.then(postRes => {
-			console.log('postRes::::', postRes);
-			if (postRes.statusCode === 200) {
-				// console.log('postRes.statusCode::::', postRes.statusCode);
-				UserService.addUser(body, res);
-			}
-		})
-		.catch((error) => {
-			throw error;
-		});
-
-		// used to
 		// const { body } = req;
+
 		// return new Promise((resolve, reject) => {
-
 		// 	// valid check
-		// 	const essentialFields = ['name', 'social', 'image'];
-		// 	const isValid = essentialFields
-		// 		.map(fieldName => {
-		// 			if (!body.hasOwnProperty(fieldName)) return false;
-		// 			if (typeof body[fieldName] !== 'string') return false;
-		// 			return true;
-		// 		})
-		// 		.reduce((a, b) => a & b)
-
-		// 	if (!isValid) {
-		// 		res.send(400, 'Need essential argument');
-		// 		reject(err); // 이렇게 써도 되는지 확인
-		// 	} else {
-		// 		res.send(200, body);
-		// 		resolve(res);
-		// 	}
-		// }).then(postRes => {
-		// 	// console.log('postRes::::', postRes);
+		// 	console.log('body::::::', body)
+		// 	this.validCheck(body)
+		// 	.then(isValid => {
+		// 		console.log('isValid::::::', isValid)
+			
+		// 		if (!isValid) {
+		// 			res.send(400, 'Need essential argument');
+		// 			// reject(err); // 이렇게 써도 되는지 확인, 안되는듯, 여기서 UnhandledPromiseRejectionWarning: Unhandled promise rejection 뜨는거 같애, 그럼 reject은 어디서 해주나?
+		// 		} else {
+		// 			res.send(200, body);
+		// 			resolve(res);
+		// 		}
+		// 	})
+		// 	.catch(err => {
+		// 		console.log("Promise Rejected", err);
+	 	// 	});
+		// })
+		// .then(postRes => {
+		// 	console.log('postRes::::', postRes);
 		// 	if (postRes.statusCode === 200) {
 		// 		// console.log('postRes.statusCode::::', postRes.statusCode);
 		// 		UserService.addUser(body, res);
 		// 	}
 		// })
+		// .catch((error) => {
+		// 	throw error;
+		// });
+
+		// used to
+		const { body } = req;
+		return new Promise((resolve, reject) => {
+
+			// valid check
+			const essentialFields = ['name', 'social', 'image'];
+			const isValid = essentialFields
+				.map(fieldName => {
+					if (!body.hasOwnProperty(fieldName)) return false;
+					if (typeof body[fieldName] !== 'string') return false;
+					return true;
+				})
+				.reduce((a, b) => a & b)
+
+			if (!isValid) {
+				res.send(400, 'Need essential argument');
+				reject(err); // 이렇게 써도 되는지 확인
+			} else {
+				res.send(200, body);
+				resolve(res);
+			}
+		}).then(postRes => {
+			// console.log('postRes::::', postRes);
+			if (postRes.statusCode === 200) {
+				// console.log('postRes.statusCode::::', postRes.statusCode);
+				UserService.addUser(body, res);
+			}
+		})
 	}
 
 	static getById(req, res) {
@@ -88,6 +91,8 @@ export default class UserController {
 	// put: input type check, find user by id, update user info
 	static put(req, res) {
 		const { body } = req;
+		let id = req.params.id;
+		console.log('id:::::::', id);
 		
 		return new Promise((resolve, reject) => {
 			// type check
@@ -96,7 +101,7 @@ export default class UserController {
 					res.send(400, 'Wrong type argument');
 					reject(err);
 				} else {
-					res.send(200, body);
+					res.status(200).send(body);
 					resolve(res);
 				}
 			})

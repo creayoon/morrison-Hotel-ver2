@@ -37,6 +37,18 @@ export default class UserService {
     
   }
 
+  static getAllUser(userInfo, res) {
+    // const user = new User(userInfo.name, userInfo.social, userInfo.image);
+    console.log('getAllUser::::::')
+    
+  }
+
+  static getUserByName(userInfo, res) {
+    // const user = new User(userInfo.name, userInfo.social, userInfo.image);
+    console.log('getUserByName::::::')
+    
+  }
+
 	static updateUser(userInfo, res) {
     console.log('updateUser::::::')
 
@@ -46,6 +58,7 @@ export default class UserService {
     console.log('deleteUser::::::')
     
   }
+  
 
 
 
