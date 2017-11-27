@@ -1,102 +1,102 @@
-import { UserService } from '../services/user-service';
+import UserService from '../services/user-service';
+
+class UserError extends Error {
+  constructor(message) {
+    super();
+    this.message = message;
+  }
+}
 
 export default class UserController {
-	static get(req, res) {
-		const {data} = req.query;
-		
+	static get(req, res, cb) {
+		const { data } = req.query;
+
 		if (type === 'list')
-		UserService.getAllUser();
+			UserService.getAllUser();
 
 		else if (type === 'name')
-		UserService.getUserByName(name);
+			UserService.getUserByName(name);
 
-	  res.send({data});
-	  cb();
+	  res.send({ data });
+		cb();
 	}
 
 	// post: input data validation chk (누락된 정보가 없도록 모든 필드 확인)
-	static post(req, res) {
+	static post(req, res, cb) {
 		// refactoring 후 에러나는 코드
 		// 에러메시지: UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 2): TypeError: Cannot read property 'validCheck' of undefined
 
-		// const { body } = req;
+		const { body } = req;
 
+		// valid check
+    UserController.validCheck(body)
+      .then(isValid => {
+        if (!isValid) throw new UserError('Need essential argument');
+        return UserService.addUser(body, res)
+      })
+      .then(addUserResult => {
+        res.send(200, addUserResult);
+        cb(); // 여기도 resolve(res) 아니고 cb()
+      })
+      .catch(err => {
+        if (err instanceof UserError ) {
+          res.send(400, 'Need essential argument');
+          cb(); // 습관적으로 reject() 쓰지말자
+          return;
+        }
+        cb(err);
+      });
+    
+		// used to
+		// const { body } = req;
 		// return new Promise((resolve, reject) => {
+
 		// 	// valid check
-		// 	console.log('body::::::', body)
-		// 	this.validCheck(body)
-		// 	.then(isValid => {
-		// 		console.log('isValid::::::', isValid)
-			
-		// 		if (!isValid) {
-		// 			res.send(400, 'Need essential argument');
-		// 			// reject(err); // 이렇게 써도 되는지 확인, 안되는듯, 여기서 UnhandledPromiseRejectionWarning: Unhandled promise rejection 뜨는거 같애, 그럼 reject은 어디서 해주나?
-		// 		} else {
-		// 			res.send(200, body);
-		// 			resolve(res);
-		// 		}
-		// 	})
-		// 	.catch(err => {
-		// 		console.log("Promise Rejected", err);
-	 	// 	});
-		// })
-		// .then(postRes => {
-		// 	console.log('postRes::::', postRes);
+		// 	const essentialFields = ['name', 'social', 'image'];
+		// 	const isValid = essentialFields
+		// 		.map(fieldName => {
+		// 			if (!body.hasOwnProperty(fieldName)) return false;
+		// 			if (typeof body[fieldName] !== 'string') return false;
+		// 			return true;
+		// 		})
+		// 		.reduce((a, b) => a & b)
+
+		// 	if (!isValid) {
+		// 		res.send(400, 'Need essential argument');
+		// 		reject(err); // 이렇게 써도 되는지 확인
+		// 	} else {
+		// 		res.send(200, body);
+		// 		resolve(res);
+		// 	}
+		// }).then(postRes => {
+		// 	// console.log('postRes::::', postRes);
 		// 	if (postRes.statusCode === 200) {
 		// 		// console.log('postRes.statusCode::::', postRes.statusCode);
 		// 		UserService.addUser(body, res);
 		// 	}
+
+		// 	cb(); // 여기서 cb() 맞지?
 		// })
-		// .catch((error) => {
-		// 	throw error;
-		// });
-
-		// used to
-		const { body } = req;
-		return new Promise((resolve, reject) => {
-
-			// valid check
-			const essentialFields = ['name', 'social', 'image'];
-			const isValid = essentialFields
-				.map(fieldName => {
-					if (!body.hasOwnProperty(fieldName)) return false;
-					if (typeof body[fieldName] !== 'string') return false;
-					return true;
-				})
-				.reduce((a, b) => a & b)
-
-			if (!isValid) {
-				res.send(400, 'Need essential argument');
-				reject(err); // 이렇게 써도 되는지 확인
-			} else {
-				res.send(200, body);
-				resolve(res);
-			}
-		}).then(postRes => {
-			// console.log('postRes::::', postRes);
-			if (postRes.statusCode === 200) {
-				// console.log('postRes.statusCode::::', postRes.statusCode);
-				UserService.addUser(body, res);
-			}
-		})
 	}
 
-	static getById(req, res) {
-		const { id } = req.params;
+	static getByName(req, res, cb) {
+    const { id } = req.query;
+    
+    UserService.getUser(id)
 
 		res.send({ id });
 		cb();
 	}
 
 	// put: input type check, find user by id, update user info
-	static put(req, res) {
+	static put(req, res, cb) {
 		const { body } = req;
 		let id = req.params.id;
 		console.log('id:::::::', id);
-		
+
 		return new Promise((resolve, reject) => {
 			// type check
-			this.typeCheck(body).then(isType => {
+			UserController.typeCheck(body).then(isType => {
 				if (!isType) {
 					res.send(400, 'Wrong type argument');
 					reject(err);
@@ -124,7 +124,7 @@ export default class UserController {
 	// user model valid check
 	static validCheck(body) {
 		console.log('validCheck body:::', body)
-		
+
 		return new Promise((resolve, reject) => {
 			console.log(11111)
 			const essentialFields = ['name', 'social', 'image'];
@@ -139,7 +139,7 @@ export default class UserController {
 
 			if (!isValid) {
 				console.log('is not valid:::::::')
-				reject(err);
+				reject(new Error('is not valid:::::::'));
 			} else {
 				console.log('is valid:::::::')
 				resolve(isValid)
@@ -158,10 +158,10 @@ export default class UserController {
 			if (body.hasOwnProperty(fieldName) != 'string') return false;
 			return true;
 		})
-		.reduce((a,b) => a & b)	
+			.reduce((a, b) => a & b)
 		if (isValid) {
 			resolve(isValid)
 		}
-		
+
 	}
 }

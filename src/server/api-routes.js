@@ -9,7 +9,7 @@ router.get('/', Controller.get);
 // user
 router.get('/users', UserController.get);
 router.post('/users', UserController.post);
-router.get('/users/:id', UserController.getById);
+router.get('/users/:id', UserController.getByName);
 router.put('/users/:id', UserController.put);
 router.delete('/users/:id', UserController.delete);
 
