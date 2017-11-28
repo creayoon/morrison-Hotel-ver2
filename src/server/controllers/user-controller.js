@@ -80,9 +80,11 @@ export default class UserController {
 	}
 
 	static getByName(req, res, cb) {
-    const { id } = req.query;
-    
-    UserService.getUser(id)
+        const { id } = req.query;
+        
+        UserService.getUser(id)
+
+        // test
 
 		res.send({ id });
 		cb();
