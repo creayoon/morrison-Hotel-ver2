@@ -8,12 +8,13 @@ class UserError extends Error {
 }
 
 export default class UserController {
+
+  // get
 	static get(req, res, cb) {
 		const { data } = req.query;
 
 		if (type === 'list')
 			UserService.getAllUser();
-
 		else if (type === 'name')
 			UserService.getUserByName(name);
 
@@ -23,9 +24,6 @@ export default class UserController {
 
 	// post: input data validation chk (누락된 정보가 없도록 모든 필드 확인)
 	static post(req, res, cb) {
-		// refactoring 후 에러나는 코드
-		// 에러메시지: UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 2): TypeError: Cannot read property 'validCheck' of undefined
-
 		const { body } = req;
 
 		// valid check
@@ -36,57 +34,27 @@ export default class UserController {
       })
       .then(addUserResult => {
         res.send(200, addUserResult);
-        cb(); // 여기도 resolve(res) 아니고 cb()
+        cb(); // resolve(res) 아니고 cb()
       })
       .catch(err => {
         if (err instanceof UserError ) {
           res.send(400, 'Need essential argument');
-          cb(); // 습관적으로 reject() 쓰지말자
+          cb();
           return;
         }
         cb(err);
       });
-    
-		// used to
-		// const { body } = req;
-		// return new Promise((resolve, reject) => {
-
-		// 	// valid check
-		// 	const essentialFields = ['name', 'social', 'image'];
-		// 	const isValid = essentialFields
-		// 		.map(fieldName => {
-		// 			if (!body.hasOwnProperty(fieldName)) return false;
-		// 			if (typeof body[fieldName] !== 'string') return false;
-		// 			return true;
-		// 		})
-		// 		.reduce((a, b) => a & b)
-
-		// 	if (!isValid) {
-		// 		res.send(400, 'Need essential argument');
-		// 		reject(err); // 이렇게 써도 되는지 확인
-		// 	} else {
-		// 		res.send(200, body);
-		// 		resolve(res);
-		// 	}
-		// }).then(postRes => {
-		// 	// console.log('postRes::::', postRes);
-		// 	if (postRes.statusCode === 200) {
-		// 		// console.log('postRes.statusCode::::', postRes.statusCode);
-		// 		UserService.addUser(body, res);
-		// 	}
-
-		// 	cb(); // 여기서 cb() 맞지?
-		// })
 	}
 
 	static getByName(req, res, cb) {
-        const { id } = req.query;
-        
-        UserService.getUser(id)
+    const { name } = req.query;
+    console.log('name:::::', name)
 
-        // test
+    // name 인자가 string이 맞는지 체크하는 코드 추가
+    UserService.getUser(name);
 
-		res.send({ id });
+    console.log(res.body)
+		// res.send({ name });
 		cb();
 	}
 
@@ -128,7 +96,6 @@ export default class UserController {
 		console.log('validCheck body:::', body)
 
 		return new Promise((resolve, reject) => {
-			console.log(11111)
 			const essentialFields = ['name', 'social', 'image'];
 			const isValid = essentialFields
 				.map(fieldName => {

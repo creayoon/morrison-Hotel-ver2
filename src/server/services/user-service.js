@@ -29,8 +29,13 @@ export default class UserService {
     //   });
   }
 
-  static getUser(userInfo, res) {
-    const user = new User(userInfo.name, userInfo.social, userInfo.image);
+  static getUser(name, res) {
+		console.log(name, typeof name);
+		
+    const user = new User(name);
+
+		return MongoDB.read('user', {'name': name})
+    
 
   }
 
@@ -42,7 +47,7 @@ export default class UserService {
 
   static getUserByName(name, res) {
       const query = {'name': name};
-      
+
     // const user = new User(userInfo.name, userInfo.social, userInfo.image);
     console.log('getUserByName::::::')
 

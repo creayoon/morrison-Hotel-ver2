@@ -66,6 +66,7 @@ export class MongoDB {
 
 	// R: find
 	static read(collection, query) {
+    console.log(111111)
 		if (!collection || !values) {
 			return new Promise.reject(new Error('Error'));
 		}

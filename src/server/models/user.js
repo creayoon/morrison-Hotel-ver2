@@ -11,7 +11,6 @@ export default class {
   validate() {
     // type check
     if (typeof this.name !== 'string') throw new Error('name is not a String');
-    if (typeof this.name !== 'string') throw new Error('name is not a String');
 
     if (!this.name) throw new Error('name is null');
     // if (this.name === '') throw new Error('name is empty');
