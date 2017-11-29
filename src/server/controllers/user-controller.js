@@ -47,13 +47,19 @@ export default class UserController {
 	}
 
 	static getByName(req, res, cb) {
+    // Error on request GET /api/users?name=abc
+    // ReferenceError: type is not defined
+    
+    // console.log('getByname req:::::', req);
+    // console.log('req.query:::::', req.query)
+    
     const { name } = req.query;
-    console.log('name:::::', name)
+    // console.log('name:::::', name)
 
     // name 인자가 string이 맞는지 체크하는 코드 추가
     UserService.getUser(name);
 
-    console.log(res.body)
+    // console.log(res.body)
 		// res.send({ name });
 		cb();
 	}
@@ -75,13 +81,15 @@ export default class UserController {
 					resolve(res);
 				}
 			})
-		}).then(putRes => {
-			console.log('putRes::::', putRes);
-			if (putRes.statusCode === 200) {
-				// console.log('putRes.statusCode::::', putRes.statusCode);
-				UserService.updateUser(body, res);
-			}
-		})
+    })
+        .then(putRes => {
+          console.log('putRes::::', putRes);
+          if (putRes.statusCode === 200) {
+            // console.log('putRes.statusCode::::', putRes.statusCode);
+            UserService.updateUser(body, res);
+          }
+        })
+        .catch(e => console.log('Err:::', e));
 	}
 
 	static delete(req, res) {
