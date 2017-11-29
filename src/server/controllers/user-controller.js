@@ -8,6 +8,7 @@ class UserError extends Error {
 }
 
 export default class UserController {
+
   // get
 	static get(req, res, cb) {
 		const { data } = req.query;
@@ -68,28 +69,27 @@ export default class UserController {
 		const { body } = req;
 		let id = req.params.id;
 		console.log('id:::::::', id);
-		console.log('body:::::::', body);
 
-		// return new Promise((resolve, reject) => {
-		// 	// type check
-		// 	UserController.typeCheck(body).then(isType => {
-		// 		if (!isType) {
-		// 			res.send(400, 'Wrong type argument');
-		// 			reject(err);
-		// 		} else {
-		// 			res.status(200).send(body);
-		// 			resolve(res);
-		// 		}
-		// 	})
-    // })
-    //     .then(putRes => {
-    //       console.log('putRes::::', putRes);
-    //       if (putRes.statusCode === 200) {
-    //         // console.log('putRes.statusCode::::', putRes.statusCode);
-    //         UserService.updateUser(body, res);
-    //       }
-    //     })
-    //     .catch(e => console.log('Err:::', e));
+		return new Promise((resolve, reject) => {
+			// type check
+			UserController.typeCheck(body).then(isType => {
+				if (!isType) {
+					res.send(400, 'Wrong type argument');
+					reject(err);
+				} else {
+					res.status(200).send(body);
+					resolve(res);
+				}
+			})
+    })
+        .then(putRes => {
+          console.log('putRes::::', putRes);
+          if (putRes.statusCode === 200) {
+            // console.log('putRes.statusCode::::', putRes.statusCode);
+            UserService.updateUser(body, res);
+          }
+        })
+        .catch(e => console.log('Err:::', e));
 	}
 
 	static delete(req, res) {
