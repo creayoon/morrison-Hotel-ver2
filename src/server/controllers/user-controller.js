@@ -41,7 +41,7 @@ export default class UserController {
 	// get by name
 	static getByName(req, res, cb) {
 		const { name } = req.query;
-		console.log('name:::::', name)
+		// console.log('name:::::', name)
 
 		UserController.validCheck(body)
 		.then(isValid => {
@@ -111,13 +111,13 @@ export default class UserController {
 
 	// user model valid check of every single field
 	static validCheck(body) {
-		console.log('validCheck body:::', body)
+		// console.log('validCheck body:::', body)
 
 		return new Promise((resolve, reject) => {
 			const essentialFields = ['name', 'social', 'image'];
 			const isValid = essentialFields
 				.map(fieldName => {
-					console.log('fieldName:::', fieldName)
+					// console.log('fieldName:::', fieldName)
 					if (!body.hasOwnProperty(fieldName)) return false;
 					if (typeof body[fieldName] !== 'string') return false;
 					return true;
@@ -125,10 +125,10 @@ export default class UserController {
 				.reduce((a, b) => a & b)
 
 			if (!isValid) {
-				console.log('is not valid:::::::')
+				// console.log('is not valid:::::::')
 				reject(new Error('is not valid:::::::'));
 			} else {
-				console.log('is valid:::::::')
+				// console.log('is valid:::::::')
 				resolve(isValid)
 			}
 		})

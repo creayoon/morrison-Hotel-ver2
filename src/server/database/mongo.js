@@ -102,13 +102,11 @@ export class MongoDB {
 
 	// U: updateMany
 	static update(collection, ...values) {
-		console.log('mongo DB reach!!')
-
 		if (!collection || !values) {
 			return Promise.reject(new Error('Invalid argument exception'));
 		}
 
-		return new Promise((resolve, reject) => {
+		new Promise((resolve, reject) => {
 			MongoClient.connect(mongoConfig.url, (connErr, db) => {
 				if (connErr) {
 					reject(connErr);
@@ -117,10 +115,14 @@ export class MongoDB {
 				resolve(db);
 			});
 		})
-			.then(db => {
-				Promise((resolve, reject) => {
-					db.collection(collection).updateMany(values, (dbErr, res) => {
+			.then(db => { // db undefined error
+				console.log('update values:::', values)
+
+				// new 안해주면 undefined is not a promise 에러
+				return new Promise((resolve, reject) => {
+					db.collection(collection).updateMany({name: values}, (dbErr, res) => {
 						db.close();
+						console.log('res 111::::::', res);
 
 						// err  
 						if (dbErr) {
@@ -129,12 +131,13 @@ export class MongoDB {
 						}
 
 						// data가 깨지거나 했을 경우를 대비
-						if (values.length !== res.insertedCount) {
+						if (values.length !== res.modifiedCount) {
 							reject(new Error('fail insert'));
 							return;
 						}
-
-						resolve(res.insertedCount);
+						
+						console.log(33333)
+						resolve(res.modifiedCount);
 					});
 				});
 			})

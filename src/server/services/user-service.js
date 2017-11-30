@@ -30,8 +30,6 @@ export default class UserService {
 	}
 
 	static getUser(name, res) {
-		console.log(name, typeof name);
-
 		const user = new User(name);
 
 		return MongoDB.read('user', { 'name': name })
@@ -54,21 +52,21 @@ export default class UserService {
 	}
 
 	static updateUser(userInfo, res) {
-		console.log('updateUser::::::')
-
 		const user = new User(userInfo.name, userInfo.social, userInfo.image);
-		// console.log('user service::::', user);
+		console.log('user service::::', user);
 
 		// insert: input data count 
-		return MongoDB.insert('user', user)
+		// update(query, update, options)
+		return MongoDB.update('user', user)
 			.then(result => {
-				console.log('user service reached!!')
+				console.log('user service reached!!', result)
 
-				if (result.insertedCount > 0) {
+				if (result.modifiedCount > 0) {
 					return result;
 				}
 				throw new Error('result count less then 0');
 			})
+			.catch(err => console.log(err));
 	}
 
 	static deleteUser(userInfo, res) {
