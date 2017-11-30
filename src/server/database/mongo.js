@@ -5,197 +5,197 @@ import fs from 'fs';
 import { Logger } from 'winston';
 
 export const MongoClient =
-  process.env.NODE_ENV === 'test' ? mongoMock.MongoClient : mongodb.MongoClient;
+	process.env.NODE_ENV === 'test' ? mongoMock.MongoClient : mongodb.MongoClient;
 
 // 서버가 돌기 전이라서 sync걸어도 좋아서 sync씀
 const mongoConfig = JSON.parse(fs.readFileSync(config.mongodb, 'utf-8'));
 
 export class MongoDB {
 
-  // C: insertMany
-  static insert(collection, ...values) {
-    if (!collection || !values) {
-      return Promise.reject(new Error('Invalid argument exception'));
-    }
+	// C: insertMany
+	static insert(collection, ...values) {
+		if (!collection || !values) {
+			return Promise.reject(new Error('Invalid argument exception'));
+		}
 
-    return new Promise((resolve, reject) => {
-      MongoClient.connect(mongoConfig.url, (connErr, db) => {
-        if (connErr) {
-          reject(connErr);
-          return;
-        }
-        resolve(db);
-      });
-    })
-      .then(db => {
-        return new Promise((resolve, reject) => {
-          db.collection(collection).insertMany(values, (dbErr, res) => {
-            db.close();
+		return new Promise((resolve, reject) => {
+			MongoClient.connect(mongoConfig.url, (connErr, db) => {
+				if (connErr) {
+					reject(connErr);
+					return;
+				}
+				resolve(db);
+			});
+		})
+			.then(db => {
+				return new Promise((resolve, reject) => {
+					db.collection(collection).insertMany(values, (dbErr, res) => {
+						db.close();
 
-            if (dbErr) {
-              reject(dbErr);
-              return;
-            }
+						if (dbErr) {
+							reject(dbErr);
+							return;
+						}
 
-            // data가 깨지거나 했을 경우를 대비
-            if (values.length !== res.insertedCount) {
-              reject(new Error('fail insert'));
-              return;
-            }
+						// data가 깨지거나 했을 경우를 대비
+						if (values.length !== res.insertedCount) {
+							reject(new Error('fail insert'));
+							return;
+						}
 
-            resolve(res);
-          });
-        });
-      })
+						resolve(res);
+					});
+				});
+			})
 
-      // 위의 promise를 풀어쓰면 아래와 같다
-      // .then(db => {
-      //   const result = db.collection(collection).insertMany(values);
-      //   if (result == null) {
-      //     throw new Error('db error');
-      //   } else if (values.length !== result.insertedCount) {
-      //     throw new Error('fail insert');
-      //   }
-      //   return result.insertedCount;
-      // })
-      .catch(connErr => {
-        // Logger.error('insert Error:::', connErr);
-        throw connErr;
-      });
-  }
+			// 위의 promise를 풀어쓰면 아래와 같다
+			// .then(db => {
+			//   const result = db.collection(collection).insertMany(values);
+			//   if (result == null) {
+			//     throw new Error('db error');
+			//   } else if (values.length !== result.insertedCount) {
+			//     throw new Error('fail insert');
+			//   }
+			//   return result.insertedCount;
+			// })
+			.catch(connErr => {
+				// Logger.error('insert Error:::', connErr);
+				throw connErr;
+			});
+	}
 
-  // R: find
-  static read(collection, query) {
-    console.log(111111)
-    if (!collection || !values) {
-      return new Promise.reject(new Error('Error'));
-    }
+	// R: find
+	static read(collection, query) {
+		console.log(111111)
+		if (!collection || !values) {
+			return new Promise.reject(new Error('Error'));
+		}
 
-    return new Promise((resolve, reject) => {
-      MongoClient.connect(mongoConfig.url, (connErr, db) => {
-        if (connErr) {
-          db.close();
-          reject(connErr);
-          return;
-        }
-        resolve(db);
-      });
-    })
-      .then(db => {
-        return new Promise((resolve, reject) => {
-          db.collection(collection)
-            .find(query)
-            .toArray((err, docs) => {
-              db.close();
-              if (err) {
-                reject(err);
-                return;
-              }
-              resolve(docs);
-            });
-        });
-      })
-      .catch(connErr => {
-        Logger.error('delete Error:::', connErr);
-      });
-  }
+		return new Promise((resolve, reject) => {
+			MongoClient.connect(mongoConfig.url, (connErr, db) => {
+				if (connErr) {
+					db.close();
+					reject(connErr);
+					return;
+				}
+				resolve(db);
+			});
+		})
+			.then(db => {
+				return new Promise((resolve, reject) => {
+					db.collection(collection)
+						.find(query)
+						.toArray((err, docs) => {
+							db.close();
+							if (err) {
+								reject(err);
+								return;
+							}
+							resolve(docs);
+						});
+				});
+			})
+			.catch(connErr => {
+				Logger.error('delete Error:::', connErr);
+			});
+	}
 
-  // U: updateMany
-  static update(collection, ...values) {
-    console.log('mongo DB reach!!')
-    
-    if (!collection || !values) {
-      return Promise.reject(new Error('Invalid argument exception'));
-    }
+	// U: updateMany
+	static update(collection, ...values) {
+		console.log('mongo DB reach!!')
 
-    return new Promise((resolve, reject) => {
-      MongoClient.connect(mongoConfig.url, (connErr, db) => {
-        if (connErr) {
-          reject(connErr);
-          return;
-        }
-        resolve(db);
-      });
-    })
-      .then(db => {
-        Promise((resolve, reject) => {
-          db.collection(collection).updateMany(values, (dbErr, res) => {
-            db.close();
+		if (!collection || !values) {
+			return Promise.reject(new Error('Invalid argument exception'));
+		}
 
-            // err  
-            if (dbErr) {
-              reject(dbErr);
-              return;
-            }
+		return new Promise((resolve, reject) => {
+			MongoClient.connect(mongoConfig.url, (connErr, db) => {
+				if (connErr) {
+					reject(connErr);
+					return;
+				}
+				resolve(db);
+			});
+		})
+			.then(db => {
+				Promise((resolve, reject) => {
+					db.collection(collection).updateMany(values, (dbErr, res) => {
+						db.close();
 
-            // data가 깨지거나 했을 경우를 대비
-            if (values.length !== res.insertedCount) {
-              reject(new Error('fail insert'));
-              return;
-            }
+						// err  
+						if (dbErr) {
+							reject(dbErr);
+							return;
+						}
 
-            resolve(res.insertedCount);
-          });
-        });
-      })
-      .catch(connErr => {
-        // Logger.error('insert Error:::', connErr);
-        throw connErr;
-      });
-  }
+						// data가 깨지거나 했을 경우를 대비
+						if (values.length !== res.insertedCount) {
+							reject(new Error('fail insert'));
+							return;
+						}
 
-  // D: deleteMany
-  static delete(collection, ...values) {
-    if (!collection || !values) {
-      return new Promise.reject(new Error('Error'));
-    }
+						resolve(res.insertedCount);
+					});
+				});
+			})
+			.catch(connErr => {
+				// Logger.error('insert Error:::', connErr);
+				throw connErr;
+			});
+	}
 
-    return new Promise((resolve, reject) => {
-      MongoClient.connect(mongoConfig.url, (connErr, db) => {
-        if (connErr) {
-          // db.close(); // 여기서 db.close 안해줘도 됨?
-          reject(connErr);
-          return;
-        }
-        resolve(db);
-      });
-    })
-      .then(db => {
-        // db.collection(collection).deleteMany(values, (dbErr, res) => {
-        db.collection(collection).deleteMany(values, (dbErr) => {
-          if (dbErr) {
-            db.close();
-            // cb(dbErr);
-            throw dbErr;
-            // return;
-          }
+	// D: deleteMany
+	static delete(collection, ...values) {
+		if (!collection || !values) {
+			return new Promise.reject(new Error('Error'));
+		}
 
-          // deleteMany에서 알아서 for문 도는데 map 왜 쓰기로 했었지...?
-          values.map(data => {
-            // console.log('data::::', data); // eslint-disable-line no-console
-          });
-          // delete error 대비
-          // if (values.length !== res.deletedCount) {
-          //   db.close();
-          //   Logger.log('deletemany:::::::', values);
-          //   Logger.log('deletemany res:::::::', res); // Logger.log 쓰면 not a function이라면서 계속 에러나..ㅜ
+		return new Promise((resolve, reject) => {
+			MongoClient.connect(mongoConfig.url, (connErr, db) => {
+				if (connErr) {
+					// db.close(); // 여기서 db.close 안해줘도 됨?
+					reject(connErr);
+					return;
+				}
+				resolve(db);
+			});
+		})
+			.then(db => {
+				// db.collection(collection).deleteMany(values, (dbErr, res) => {
+				db.collection(collection).deleteMany(values, (dbErr) => {
+					if (dbErr) {
+						db.close();
+						// cb(dbErr);
+						throw dbErr;
+						// return;
+					}
 
-          //   throw new Error('fail delete');
-          //   // .idea 폴더 용도가 뭔지?
-          //   // 추후 delete rollback, mongo에서 기본 제공하지 않음, 일단 pass
-          //   // return;
-          // }
+					// deleteMany에서 알아서 for문 도는데 map 왜 쓰기로 했었지...?
+					values.map(data => {
+						// console.log('data::::', data); // eslint-disable-line no-console
+					});
+					// delete error 대비
+					// if (values.length !== res.deletedCount) {
+					//   db.close();
+					//   Logger.log('deletemany:::::::', values);
+					//   Logger.log('deletemany res:::::::', res); // Logger.log 쓰면 not a function이라면서 계속 에러나..ㅜ
 
-          db.close();
-          // cb();
-        });
-      })
-      .catch(connErr => {
-        Logger.error('delete Error:::', connErr);
-      });
-  }
+					//   throw new Error('fail delete');
+					//   // .idea 폴더 용도가 뭔지?
+					//   // 추후 delete rollback, mongo에서 기본 제공하지 않음, 일단 pass
+					//   // return;
+					// }
 
-  // clear
+					db.close();
+					// cb();
+				});
+			})
+			.catch(connErr => {
+				Logger.error('delete Error:::', connErr);
+			});
+	}
+
+	// clear
 
 
 }

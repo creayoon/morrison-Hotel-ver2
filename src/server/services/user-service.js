@@ -73,7 +73,7 @@ export default class UserService {
 
 	static deleteUser(userInfo, res) {
 		console.log('deleteUser::::::')
-		
+
 	}
 
 
