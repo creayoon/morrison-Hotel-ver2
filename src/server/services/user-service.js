@@ -56,11 +56,24 @@ export default class UserService {
 	static updateUser(userInfo, res) {
 		console.log('updateUser::::::')
 
+		const user = new User(userInfo.name, userInfo.social, userInfo.image);
+		// console.log('user service::::', user);
+
+		// insert: input data count 
+		return MongoDB.insert('user', user)
+			.then(result => {
+				console.log('user service reached!!')
+
+				if (result.insertedCount > 0) {
+					return result;
+				}
+				throw new Error('result count less then 0');
+			})
 	}
 
 	static deleteUser(userInfo, res) {
 		console.log('deleteUser::::::')
-
+		
 	}
 
 

@@ -102,6 +102,8 @@ export class MongoDB {
 
   // U: updateMany
   static update(collection, ...values) {
+    console.log('mongo DB reach!!')
+    
     if (!collection || !values) {
       return Promise.reject(new Error('Invalid argument exception'));
     }

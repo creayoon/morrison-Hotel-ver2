@@ -10,8 +10,8 @@ router.get('/', Controller.get);
 router.get('/users', UserController.get);
 router.post('/users', UserController.post);
 router.get('/users/:name', UserController.getByName);
-router.put('/users/:id', UserController.put);
-router.delete('/users/:id', UserController.delete);
+router.put('/users/:name', UserController.put);
+router.delete('/users/:name', UserController.delete);
 
 // room
 router.get('/rooms', RoomController.get);
