@@ -6,12 +6,12 @@ export default class UserController {
 	static get(req, res, cb) {
 		const { data } = req.query;
 
-		if (type === 'list')
-			UserService.getAllUser();
-		else if (type === 'name')
-			UserService.getUserByName(name);
+		// if (type === 'list')
+		// 	UserService.getAllUser();
+		// else if (type === 'name')
+		// 	UserService.getUserByName(name);
 
-		res.send({ data });
+		// res.send({ data });
 		cb();
 	}
 
