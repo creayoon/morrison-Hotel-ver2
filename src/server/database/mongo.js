@@ -101,7 +101,7 @@ export class MongoDB {
 	}
 
 	// U: updateMany
-	static update(collection, value) {
+	static update(collection, condition, value) {
 		if (!collection || !value) {
 			return Promise.reject(new Error('Invalid argument exception'));
 		}
@@ -115,28 +115,33 @@ export class MongoDB {
 				resolve(db);
 			});
 		})
-		.then(db => { // db undefined error
-			const 
-				filter = { name: value.name },
-				update = { $set: { social: value.social, image: value.image } },
-				options = {
-					upsert: true,
-					writeConcern: 1
-				};
+		.then(db => new Promise((resolve, reject) => {
+          const
+              // TODO need to generalization
+              filter = { name: condition.name },
+              update = { $set: { social: value.social, image: value.image } },
+              options = {
+                  upsert: true,
+                  writeConcern: 1
+              };
 
-			db.collection(collection).updateMany(filter, update, (dbErr, res) => {
-				db.close();
-				// err  
-				if (dbErr) throw dbErr;
+          db.collection(collection).updateMany(filter, update, (dbErr, res) => {
+            db.close();
+            // err
+            if (dbErr) {
+              reject(dbErr);
+              return;
+            }
 
-				// data가 깨지거나 했을 경우를 대비
-				if (res.modifiedCount) throw new Error('fail update');
-				return res.modifiedCount;
-			});
-		})
+            // data가 깨지거나 했을 경우를 대비
+            // if (res.modifiedCount) throw new Error('fail update');
+            resolve(res);
+          });
+		}))
 		.catch(connErr => {
-			Logger.error('insert Error:::', connErr);
-			throw connErr;
+		  // TODO check logger error
+		  // Logger.error('insert Error:::', connErr);
+          throw connErr;
 		});
 	}
 
