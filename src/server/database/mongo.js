@@ -101,12 +101,12 @@ export class MongoDB {
 	}
 
 	// U: updateMany
-	static update(collection, ...values) {
-		if (!collection || !values) {
+	static update(collection, value) {
+		if (!collection || !value) {
 			return Promise.reject(new Error('Invalid argument exception'));
 		}
 
-		new Promise((resolve, reject) => {
+		return new Promise((resolve, reject) => {
 			MongoClient.connect(mongoConfig.url, (connErr, db) => {
 				if (connErr) {
 					reject(connErr);
@@ -115,51 +115,29 @@ export class MongoDB {
 				resolve(db);
 			});
 		})
-			.then(db => { // db undefined error
-				// console.log('update values:::', values, values[0].name)
-				// return new Promise((resolve, reject) => {
-					// updateMany(filter, update, options) 들어가는데 filter자리에 query쓰는법 모르겠어.. $eq..?
-					// ... spread로 들어온거 foreach돌려줬는데 괜찮나???
+		.then(db => { // db undefined error
+			const 
+				filter = { name: value.name },
+				update = { $set: { social: value.social, image: value.image } },
+				options = {
+					upsert: true,
+					writeConcern: 1
+				};
 
-					let filter, update;
-					values.forEach(element => {
-						console.log('element:::::', element, element.name);
-						filter = { name: element.name };
-						update = { $set: { social: element.social, image: element.image } };
+			db.collection(collection).updateMany(filter, update, (dbErr, res) => {
+				db.close();
+				// err  
+				if (dbErr) throw dbErr;
 
-						db.collection(collection).updateMany(filter, update, (dbErr, res) => {
-							db.close();
-							// console.log('res 111::::::', res);
-							// modifiedCount: 0,
-							// upsertedId: null,
-							// upsertedCount: 0,
-							// matchedCount: 1 => matching은 되는데 update가 안되는 상황..
-
-							// err  
-							if (dbErr) {
-								// reject(dbErr);
-								return dbErr;
-							}
-	
-							// data가 깨지거나 했을 경우를 대비
-							if (values.length !== res.modifiedCount) {
-								console.log(333, values.length, res.modifiedCount)
-								// reject(new Error('fail insert'));
-								return new Error('fail insert');
-							}
-	
-							console.log(444)
-							return res.modifiedCount;
-						});
-					// });
-					
-					
-				});
-			})
-			.catch(connErr => {
-				// Logger.error('insert Error:::', connErr);
-				throw connErr;
+				// data가 깨지거나 했을 경우를 대비
+				if (res.modifiedCount) throw new Error('fail update');
+				return res.modifiedCount;
 			});
+		})
+		.catch(connErr => {
+			Logger.error('insert Error:::', connErr);
+			throw connErr;
+		});
 	}
 
 	// D: deleteMany
