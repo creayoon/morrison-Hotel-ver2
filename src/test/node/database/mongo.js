@@ -25,8 +25,8 @@ const dataUser = {
 
 test('MongoDB insert many', t => {
   MongoDB.insert(collection, dataUser, dataAlice)
-      .then(count => {
-        t.equal(2, count, 'should be same number');
+      .then(res => {
+        t.equal(2, res.insertedCount, 'should be same number');
         t.end();
       })
       .catch(err => {
