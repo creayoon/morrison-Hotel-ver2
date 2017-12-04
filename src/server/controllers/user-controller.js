@@ -1,10 +1,18 @@
 import UserService from '../services/user-service';
 
 
+// error define
+class UserError extends Error {
+  constructor(message) {
+    super();
+    this.message = message;
+  }
+}
+
 export default class UserController {
   // get
   static get(req, res, cb) {
-    const { data } = req.query;
+    // const { data } = req.query;
 
     // if (type === 'list')
     // 	UserService.getAllUser();
@@ -22,7 +30,7 @@ export default class UserController {
     UserController.validCheck(body)
         .then(isValid => {
           if (!isValid) throw new UserError('Need essential argument');
-          return UserService.addUser(body, res)
+          return UserService.addUser(body, res);
         })
         .then(addUserResult => {
           res.send(200, addUserResult);
@@ -40,13 +48,13 @@ export default class UserController {
 
   // get by name
   static getByName(req, res, cb) {
-    const { name } = req.query;
+    const { id } = req.query;
     // console.log('name:::::', name)
 
-    UserController.validCheck(body)
+    UserController.validCheck(id)
         .then(isValid => {
           if (!isValid) throw new UserError('Need essential argument');
-          return UserService.getUser(name);
+          return UserService.getUser(id);
         })
         .then(addUserResult => {
           res.send(200, addUserResult);
@@ -69,7 +77,7 @@ export default class UserController {
     UserController.validCheck(body)
         .then(isValid => {
           if (!isValid) throw new UserError('Need essential argument');
-          return UserService.updateUser(body, res)
+          return UserService.updateUser(body, res);
         })
         .then(addUserResult => {
           res.send(200, addUserResult);
@@ -86,14 +94,14 @@ export default class UserController {
   }
 
   // delete
-  static delete(req, res) {
+  static delete(req, res, cb) {
     const { body } = req;
 
     UserController.validCheck(body)
         .then(isValid => {
           if (!isValid) throw new UserError('Need essential argument');
           // return UserService.addUser(body, res)
-          return UserService.deleteUser(body, res)
+          return UserService.deleteUser(body, res);
         })
         .then(addUserResult => {
           res.send(200, addUserResult);
@@ -111,8 +119,6 @@ export default class UserController {
 
   // user model valid check of every single field
   static validCheck(body) {
-    // console.log('validCheck body:::', body)
-
     return new Promise((resolve, reject) => {
       const essentialFields = ['name', 'social', 'image'];
       const isValid = essentialFields
@@ -126,17 +132,8 @@ export default class UserController {
       if (!isValid) {
         reject(new Error('is not valid:::::::'));
       } else {
-        resolve(isValid)
+        resolve(isValid);
       }
-    })
-  }
-}
-
-
-// error
-class UserError extends Error {
-  constructor(message) {
-    super();
-    this.message = message;
+    });
   }
 }

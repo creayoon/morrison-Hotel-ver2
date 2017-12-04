@@ -92,7 +92,7 @@ test('MongoDB update one', t => {
   MongoDB.insert(collection, mockUpdateData)
       .then(() => MongoDB.update(collection, condition, value))
       .then(res => {
-        t.equal(res.matchedCount, 1, "should be same size");
+        t.equal(res.matchedCount, 1, 'should be same size');
         t.pass('success');
         t.end();
       })
