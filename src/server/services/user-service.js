@@ -29,10 +29,15 @@ export default class UserService {
 		//   });
 	}
 
-	static getUser(name, res) { // eslint-disable-line no-unused-vars
-		// const user = new User(name);
-
-		return MongoDB.read('user', { name: name });
+	static getUser(id, res) { // eslint-disable-line no-unused-vars
+		return MongoDB.read('user', { id: id })
+				.then(result => {
+					console.log('read result:::', result);
+					if (result.count > 0) {
+						return result;
+					}
+					throw new Error('result count less then 0');
+				})
 	}
 
 	static getAllUser(userInfo, res) { // eslint-disable-line no-unused-vars
@@ -50,15 +55,12 @@ export default class UserService {
 	}
 
 	static updateUser(userInfo, res) { // eslint-disable-line no-unused-vars
-		const user = new User(userInfo.name, userInfo.social, userInfo.image);
-		// console.log('user service::::', user);
+		const user = new User(userInfo.id, userInfo.name, userInfo.social, userInfo.image);
 
 		// insert: input data count
 		// update(query, update, options)
 		return MongoDB.update('user', user)
 			.then(result => {
-				// console.log('user service reached!!', result);
-
 				if (result.modifiedCount > 0) {
 					return result;
 				}
@@ -68,7 +70,14 @@ export default class UserService {
 	}
 
 	static deleteUser(userInfo, res) { // eslint-disable-line no-unused-vars
-		// console.log('deleteUser::::::');
+		return MongoDB.delete('user', { id: id })
+		.then(result => {
+			console.log('read result:::', result);
+			if (result.count > 0) {
+				return result;
+			}
+			throw new Error('result count less then 0');
+		})
 	}
 
 }
