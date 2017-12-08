@@ -26,8 +26,9 @@ export default class UserController {
   // post
   static post(req, res, cb) {
     const { body } = req;
+    const essentialFields = ['id', 'name', 'social', 'image'];
 
-    UserController.validCheck(body)
+    UserController.validCheck(essentialFields, body)
         .then(isValid => {
           if (!isValid) throw new UserError('Need essential argument');
           return UserService.addUser(body, res);
@@ -50,8 +51,9 @@ export default class UserController {
   static getByName(req, res, cb) {
     const { id } = req.query;
     // console.log('name:::::', name)
+    const essentialFields = ['id'];
 
-    UserController.validCheck(id)
+    UserController.validCheck(essentialFields, id)
         .then(isValid => {
           if (!isValid) throw new UserError('Need essential argument');
           return UserService.getUser(id);
@@ -73,8 +75,9 @@ export default class UserController {
   // put: input type check, find user by id, update user info
   static put(req, res, cb) {
     const { body } = req;
+    const essentialFields = ['id'];
 
-    UserController.validCheck(body)
+    UserController.validCheck(essentialFields, body)
         .then(isValid => {
           if (!isValid) throw new UserError('Need essential argument');
           return UserService.updateUser(body, res);
@@ -96,8 +99,9 @@ export default class UserController {
   // delete
   static delete(req, res, cb) {
     const { body } = req;
+    const essentialFields = ['id'];
 
-    UserController.validCheck(body)
+    UserController.validCheck(essentialFields, body)
         .then(isValid => {
           if (!isValid) throw new UserError('Need essential argument');
           // return UserService.addUser(body, res)
@@ -118,9 +122,9 @@ export default class UserController {
   }
 
   // user model valid check of every single field
-  static validCheck(body) {
+  static validCheck(essentialFields, body) {
     return new Promise((resolve, reject) => {
-      const essentialFields = ['name', 'social', 'image'];
+      
       const isValid = essentialFields
           .map(fieldName => {
             // console.log('fieldName:::', fieldName)
