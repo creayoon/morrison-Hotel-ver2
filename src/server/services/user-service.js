@@ -55,6 +55,7 @@ export default class UserService {
 	}
 
 	static updateUser(userInfo, res) { // eslint-disable-line no-unused-vars
+		 
 		const user = new User(userInfo.id, userInfo.name, userInfo.social, userInfo.image);
 
 		// insert: input data count

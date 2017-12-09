@@ -75,9 +75,25 @@ export default class UserController {
   // put: input type check, find user by id, update user info
   static put(req, res, cb) {
     const { body } = req;
-    // console.log('body:::', body);
-    const essentialFields = ['id'];
+    const essentialFields = Object.keys(body);
+    console.log('essentialFields:::', essentialFields);
 
+    // essentialFields에 id가 없으면 error 처리
+    // if (essentialFields.id === undefined) {
+    //   return new Error('Need id for updating your personal data');
+    // }
+
+    const idchk = essentialFields.indexOf('id');
+    console.log('idchk::', idchk);
+
+    // id error case
+    if (idchk == -1) {
+      return new Error('Need id for updating your personal data');
+    } 
+    if (idchk >= 2) {
+      return new Error('Need only one id for updating your personal data');
+    } 
+    
     UserController.validCheck(essentialFields, body)
         .then(isValid => {
           if (!isValid) throw new UserError('Need essential argument');

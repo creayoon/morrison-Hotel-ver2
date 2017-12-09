@@ -101,8 +101,10 @@ export class MongoDB {
   }
 
   // U: updateMany
-  static update(collection, condition, value) {
+  // static update(collection, condition, value) {
+	static update(collection, value) {
     if (!collection || !value) {
+			console.log('mongo update:' ,collection, value)
       return Promise.reject(new Error('Invalid argument exception'));
     }
 
@@ -117,7 +119,8 @@ export class MongoDB {
     })
       .then(db => new Promise((resolve, reject) => {
         // TODO need to generalization
-        const filter = { name: condition.name };
+        // const filter = { id: condition.id };
+        const filter = { id: value.id };
         const update = { $set: { social: value.social, image: value.image } };
 
         db.collection(collection).updateMany(filter, update, (dbErr, res) => {
