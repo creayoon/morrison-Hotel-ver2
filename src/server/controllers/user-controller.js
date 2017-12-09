@@ -131,7 +131,11 @@ export default class UserController {
             cb();
             return;
           }
-          cb(err);
+          if (process.env.NODE_ENV === 'development')
+            res.send(500, err);
+          else 
+            res.send(500, '삭제도중 오류가 발생하였습니다');
+          cb();
         });
   }
 

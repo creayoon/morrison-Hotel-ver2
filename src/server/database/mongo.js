@@ -144,7 +144,7 @@ export class MongoDB {
   }
 
   // D: deleteMany
-  static delete(collection, value) {
+  static delete(collection, condition) {
     if (!collection || !value) {
 			// console.log('mongo update:' ,collection, value)
       return Promise.reject(new Error('Invalid argument exception'));
@@ -162,10 +162,10 @@ export class MongoDB {
       .then(db => new Promise((resolve, reject) => {
         // TODO need to generalization
         // const filter = { id: condition.id };
-        const filter = { id: value.id };
+        // const filter = { id: value.id };
         // const update = { $set: { social: value.social, image: value.image } };
 
-        db.collection(collection).deleteMany(filter, (dbErr, res) => {
+        db.collection(collection).deleteMany(condition, (dbErr, res) => {
           db.close();
           // err
           if (dbErr) {
