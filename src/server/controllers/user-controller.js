@@ -76,12 +76,7 @@ export default class UserController {
   static put(req, res, cb) {
     const { body } = req;
     const essentialFields = Object.keys(body);
-    console.log('essentialFields:::', essentialFields);
-
-    // essentialFields에 id가 없으면 error 처리
-    // if (essentialFields.id === undefined) {
-    //   return new Error('Need id for updating your personal data');
-    // }
+    // console.log('essentialFields:::', essentialFields);
 
     const idchk = essentialFields.indexOf('id');
     console.log('idchk::', idchk);
@@ -92,7 +87,7 @@ export default class UserController {
     } 
     if (idchk >= 2) {
       return new Error('Need only one id for updating your personal data');
-    } 
+    }
     
     UserController.validCheck(essentialFields, body)
         .then(isValid => {
@@ -115,14 +110,16 @@ export default class UserController {
 
   // delete
   static delete(req, res, cb) {
-    const { body } = req;
+    // const { body } = req;
+    const { id } = req.params;
+    console.log('id:::::', id);
     const essentialFields = ['id'];
 
-    UserController.validCheck(essentialFields, body)
+    UserController.validCheck(essentialFields, {id})
         .then(isValid => {
           if (!isValid) throw new UserError('Need essential argument');
           // return UserService.addUser(body, res)
-          return UserService.deleteUser(body, res);
+          return UserService.deleteUser(id, res);
         })
         .then(addUserResult => {
           res.send(200, addUserResult);

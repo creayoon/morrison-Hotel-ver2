@@ -70,11 +70,11 @@ export default class UserService {
 			.catch(err => { throw err });
 	}
 
-	static deleteUser(userInfo, res) { // eslint-disable-line no-unused-vars
-		return MongoDB.delete('user', { id: id })
+	static deleteUser(userId, res) { // eslint-disable-line no-unused-vars
+		return MongoDB.delete('user', { id: userId })
 		.then(result => {
 			console.log('read result:::', result);
-			if (result.count > 0) {
+			if (result.deletedCount > 0) {
 				return result;
 			}
 			throw new Error('result count less then 0');

@@ -104,7 +104,7 @@ export class MongoDB {
   // static update(collection, condition, value) {
 	static update(collection, value) {
     if (!collection || !value) {
-			console.log('mongo update:' ,collection, value)
+			// console.log('mongo update:' ,collection, value)
       return Promise.reject(new Error('Invalid argument exception'));
     }
 
@@ -144,54 +144,44 @@ export class MongoDB {
   }
 
   // D: deleteMany
-  static delete(collection, ...values) {
-    if (!collection || !values) {
-      return new Promise.reject(new Error('Error')); // eslint-disable-line new-cap
+  static delete(collection, value) {
+    if (!collection || !value) {
+			// console.log('mongo update:' ,collection, value)
+      return Promise.reject(new Error('Invalid argument exception'));
     }
 
     return new Promise((resolve, reject) => {
       MongoClient.connect(MongoConfig.url, (connErr, db) => {
         if (connErr) {
-          // db.close(); // 여기서 db.close 안해줘도 됨?
           reject(connErr);
           return;
         }
         resolve(db);
       });
     })
-      .then(db => {
-        // db.collection(collection).deleteMany(values, (dbErr, res) => {
-        db.collection(collection).deleteMany(values, (dbErr) => {
+      .then(db => new Promise((resolve, reject) => {
+        // TODO need to generalization
+        // const filter = { id: condition.id };
+        const filter = { id: value.id };
+        // const update = { $set: { social: value.social, image: value.image } };
+
+        db.collection(collection).deleteMany(filter, (dbErr, res) => {
+          db.close();
+          // err
           if (dbErr) {
-            db.close();
-            // cb(dbErr);
-            throw dbErr;
-            // return;
+            reject(dbErr);
+            return;
           }
 
-          // deleteMany에서 알아서 for문 도는데 map 왜 쓰기로 했었지...?
-          values.map(data => {
-            console.log('data::::', data); // eslint-disable-line no-console
-          });
-          // delete error 대비
-          // if (values.length !== res.deletedCount) {
-          //   db.close();
-          //   Logger.log('deletemany:::::::', values);
-          //   Logger.log('deletemany res:::::::', res);
-          // Logger.log 쓰면 not a function이라면서 계속 에러나..ㅜ
-
-          //   throw new Error('fail delete');
-          //   // .idea 폴더 용도가 뭔지?
-          //   // 추후 delete rollback, mongo에서 기본 제공하지 않음, 일단 pass
-          //   // return;
-          // }
-
-          db.close();
-          // cb();
+          // data가 깨지거나 했을 경우를 대비
+          // if (res.modifiedCount) throw new Error('fail update');
+          resolve(res);
         });
-      })
+      }))
       .catch(connErr => {
-        Logger.error('delete Error:::', connErr);
+        // TODO check logger error
+        // Logger.error('insert Error:::', connErr);
+        throw connErr;
       });
   }
 
