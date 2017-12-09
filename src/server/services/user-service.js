@@ -33,7 +33,7 @@ export default class UserService {
 		return MongoDB.read('user', { id: id })
 				.then(result => {
 					console.log('read result:::', result);
-					if (result.count > 0) {
+					if (result.length > 0) {
 						return result;
 					}
 					throw new Error('result count less then 0');

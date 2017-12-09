@@ -9,9 +9,9 @@ router.get('/', Controller.get);
 // user
 router.get('/users', UserController.get);
 router.post('/users', UserController.post);
-router.get('/users/:name', UserController.getByName);
-router.put('/users/:name', UserController.put);
-router.delete('/users/:name', UserController.delete);
+router.get('/users/:id', UserController.getById);
+router.put('/users/:id', UserController.put);
+router.delete('/users/:id', UserController.delete);
 
 // room
 router.get('/rooms', RoomController.get);

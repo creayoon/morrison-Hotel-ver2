@@ -48,12 +48,12 @@ export default class UserController {
   }
 
   // get by name
-  static getByName(req, res, cb) {
-    const { id } = req.query;
-    // console.log('name:::::', name)
+  static getById(req, res, cb) {
+    const { id } = req.params;
+    console.log('id:::::', id);
     const essentialFields = ['id'];
 
-    UserController.validCheck(essentialFields, id)
+    UserController.validCheck(essentialFields, {id})
         .then(isValid => {
           if (!isValid) throw new UserError('Need essential argument');
           return UserService.getUser(id);
@@ -75,6 +75,7 @@ export default class UserController {
   // put: input type check, find user by id, update user info
   static put(req, res, cb) {
     const { body } = req;
+    // console.log('body:::', body);
     const essentialFields = ['id'];
 
     UserController.validCheck(essentialFields, body)
@@ -127,7 +128,9 @@ export default class UserController {
       
       const isValid = essentialFields
           .map(fieldName => {
-            // console.log('fieldName:::', fieldName)
+            console.log('fieldName:::', fieldName)
+            console.log('body:::', body)
+
             if (!body.hasOwnProperty(fieldName)) return false;
             if (typeof body[fieldName] !== 'string') return false;
             return true;
