@@ -18,9 +18,20 @@ export default class UserController {
     // 	UserService.getAllUser();
     // else if (type === 'name')
     // 	UserService.getUserByName(name);
-
+console.log("ewrqweq")
     // res.send({ data });
-    cb();
+		UserService.getAllUser()
+				.then(result =>{
+					res.send(200, result);
+					cb();
+				})
+				.catch(err => {
+					if (process.env.NODE_ENV === 'development')
+						res.send(500, err);
+					else 
+						res.send(500, '삭제도중 오류가 발생하였습니다');
+					cb();
+				})
   }
 
   // post
@@ -31,7 +42,7 @@ export default class UserController {
     UserController.validCheck(essentialFields, body)
         .then(isValid => {
           if (!isValid) throw new UserError('Need essential argument');
-          return UserService.addUser(body, res);
+          return UserService.addUser(body);
         })
         .then(addUserResult => {
           res.send(200, addUserResult);

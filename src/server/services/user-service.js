@@ -3,7 +3,7 @@ import { MongoDB } from '../database/mongo';
 
 export default class UserService {
 
-	static addUser(userInfo, res) { // eslint-disable-line no-unused-vars
+	static addUser(userInfo) { // eslint-disable-line no-unused-vars
 		const user = new User(userInfo.id, userInfo.name, userInfo.social, userInfo.image);
 		// console.log('user service::::', user);
 
@@ -43,15 +43,15 @@ export default class UserService {
 	static getAllUser(userInfo, res) { // eslint-disable-line no-unused-vars
 		// const user = new User(userInfo.name, userInfo.social, userInfo.image);
 		// console.log('getAllUser::::::')
-
-	}
-
-	static getUserByName(name, res) { // eslint-disable-line no-unused-vars
-		// const query = { 'name': name };
-
-		// const user = new User(userInfo.name, userInfo.social, userInfo.image);
-		// console.log('getUserByName::::::')
-
+		
+		return MongoDB.read('user', {})
+		.then(result => {
+			console.log('read result:::', result);
+			if (result.length > 0) {
+				return result;
+			}
+			throw new Error('result count less then 0');
+		})
 	}
 
 	static updateUser(userInfo, res) { // eslint-disable-line no-unused-vars
