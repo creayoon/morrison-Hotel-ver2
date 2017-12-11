@@ -54,9 +54,12 @@ export default class RoomController {
 	// post
 	static post(req, res, cb) {
 		const { body } = req;
-		const essentialFields = ['defaultPrice', 'roomNumber', 'roomType', 'facility', 'roomSize', 'bedSize', 'availableGuest', 'acceptChild', 'blueprint', 'image', 'roomName'];
+		// const essentialFields = ['defaultPrice', 'roomNumber', 'roomType', 'facility', 'roomSize', 'bedSize', 'availableGuest', 'acceptChild', 'blueprint', 'image', 'roomName'];
+		const essentialNumber = ['defaultPrice', 'roomNumber', 'availableGuest', 'acceptChild'];
+		const essentialString = ['roomType', 'roomSize', 'bedSize', 'blueprint', 'roomName'];
+		const essentialArray = ['facility', 'image'];
 
-		RoomController.validCheck(essentialFields, body)
+		RoomController.validCheck(essentialString, body, essentialNumber, essentialArray)
 			.then(isValid => {
 				if (!isValid) throw new RoomError('Need essential argument');
 				return RoomService.addRoom(body);
@@ -142,9 +145,12 @@ export default class RoomController {
 	}
 
 	// room model valid check of every single field
-	static validCheck(essentialFields, body) {
+	static validCheck(essentialString, body, essentialNumber, essentialArray) {
+		
+
+		// string
 		return new Promise((resolve, reject) => {
-			const isValid = essentialFields
+			const isValid = stringValid
 				.map(fieldName => {
 					console.log('fieldName:::', fieldName);
 					console.log('body:::', body);
