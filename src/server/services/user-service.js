@@ -2,10 +2,8 @@ import User from '../models/user';
 import { MongoDB } from '../database/mongo';
 
 export default class UserService {
-
 	static addUser(userInfo) { // eslint-disable-line no-unused-vars
 		const user = new User(userInfo.id, userInfo.name, userInfo.social, userInfo.image);
-		// console.log('user service::::', user);
 
 		// insert: input data count
 		return MongoDB.insert('user', user)
@@ -15,18 +13,6 @@ export default class UserService {
 				}
 				throw new Error('result count less then 0');
 			});
-
-		// update
-		// MongoDB.update('user', user)
-		//   .then(count => {
-		//     if (count > 0) {
-		//       res.send(200, user);
-		//       return;
-		//     }
-		//     res.send(500, 'data is not saved');
-		//   }).catch(err => {
-		//     throw err
-		//   });
 	}
 
 	static getUser(id, res) { // eslint-disable-line no-unused-vars
@@ -41,9 +27,6 @@ export default class UserService {
 	}
 
 	static getAllUser(userInfo, res) { // eslint-disable-line no-unused-vars
-		// const user = new User(userInfo.name, userInfo.social, userInfo.image);
-		// console.log('getAllUser::::::')
-		
 		return MongoDB.read('user', {})
 		.then(result => {
 			console.log('read result:::', result);

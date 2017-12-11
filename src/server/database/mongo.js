@@ -66,7 +66,6 @@ export class MongoDB {
 
   // R: find
   static read(collection, query) {
-    // console.log(111111)
     if (!collection || !query) {
       return new Promise.reject(new Error('Error')); // eslint-disable-line new-cap
     }

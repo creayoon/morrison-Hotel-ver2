@@ -10,16 +10,8 @@ class UserError extends Error {
 }
 
 export default class UserController {
-  // get
+  // get all
   static get(req, res, cb) {
-    // const { data } = req.query;
-
-    // if (type === 'list')
-    // 	UserService.getAllUser();
-    // else if (type === 'name')
-    // 	UserService.getUserByName(name);
-console.log("ewrqweq")
-    // res.send({ data });
 		UserService.getAllUser()
 				.then(result =>{
 					res.send(200, result);
@@ -32,17 +24,18 @@ console.log("ewrqweq")
 						res.send(500, '삭제도중 오류가 발생하였습니다');
 					cb();
 				})
-  }
+	}
+	
+	// get by id
+  static getById(req, res, cb) {
+    const { id } = req.params;
+    console.log('id:::::', id);
+    const essentialFields = ['id'];
 
-  // post
-  static post(req, res, cb) {
-    const { body } = req;
-    const essentialFields = ['id', 'name', 'social', 'image'];
-
-    UserController.validCheck(essentialFields, body)
+    UserController.validCheck(essentialFields, {id})
         .then(isValid => {
           if (!isValid) throw new UserError('Need essential argument');
-          return UserService.addUser(body);
+          return UserService.getUser(id);
         })
         .then(addUserResult => {
           res.send(200, addUserResult);
@@ -58,16 +51,15 @@ console.log("ewrqweq")
         });
   }
 
-  // get by name
-  static getById(req, res, cb) {
-    const { id } = req.params;
-    console.log('id:::::', id);
-    const essentialFields = ['id'];
+  // post
+  static post(req, res, cb) {
+    const { body } = req;
+    const essentialFields = ['id', 'name', 'social', 'image'];
 
-    UserController.validCheck(essentialFields, {id})
+    UserController.validCheck(essentialFields, body)
         .then(isValid => {
           if (!isValid) throw new UserError('Need essential argument');
-          return UserService.getUser(id);
+          return UserService.addUser(body);
         })
         .then(addUserResult => {
           res.send(200, addUserResult);
