@@ -25,7 +25,13 @@ gulp.task('build:static', ['clean:client'], () => {
 
 gulp.task('build:client', ['clean:client'], () => compileClientJS(['./src/client/javascripts/bundle.js'], 'bundle.js', './dist-client/javascripts'));
 gulp.task('build:server', ['clean:server'], () => compileNodeJS('src/{server,front}/**/*.js', './dist-server'));
-gulp.task('build', ['build:client', 'build:server', 'build:static']);
+// swagger 때문에 
+gulp.task('build:json', ['clean:server'], () => gulp.src('src/**/*.json')
+	.pipe(changed('src/**/*.json'))
+	.pipe(gulp.dest('./dist-server/'))
+);
+
+gulp.task('build', ['build:client', 'build:server', 'build:static', 'build:json']); // json 빌드 추가함
 
 gulp.task('build:test-server', ['clean:test'], () => compileNodeJS(['src/!(client)/!(browser)/**/*.js', 'src/!(client)/*.js'], './dist-test'));
 gulp.task('build:test-json', ['clean:test'], () => gulp.src('src/**/*.json')

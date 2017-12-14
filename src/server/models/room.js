@@ -10,6 +10,7 @@ export default class {
     this.acceptChild = acceptChild; 				// Number
     this.blueprint = blueprint; 						// String
     this.image = image; 										// object (Array)
+    this.roomName = this.roomType + ' ' + this.roomNumber; // string
 
     this.validate();
   }

@@ -4,14 +4,17 @@ import path from 'path';
 import bodyParser from 'body-parser';
 import logger from 'winston';
 import apiRoutes from './api-routes';
-// import {MongoDB} from './database/mongo';
+// import { MongoDB } from './database/mongo';
+
+// swagger
+
 
 // cb is optional
 export default (cb) => {
   const app = express();
 
-  app.use(bodyParser.urlencoded({extended: true}));
-  app.use(bodyParser.json({limit: 1024}));
+  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(bodyParser.json({ limit: 1024 }));
   app.use((req, res, next) => { // Log requests
     logger.info(`Request - ${req.method} - PATH : ${req.originalUrl} - ${new Date()}`);
     next();
@@ -19,6 +22,24 @@ export default (cb) => {
 
   app.use('/javascripts', express.static(path.join(__dirname, '../../dist-client/javascripts')));
   app.use('/api', apiRoutes);
+
+  // swagger default path (do not remove)
+  app.use('/api/swagger.json', function (req, res) {
+    res.json(require('./api/swagger.json'));
+  });
+
+  // swagger-ui
+  app.use('/swagger-ui', express.static(path.join(__dirname, '../../node_modules/swagger-ui-dist'))); // eslint-disable-line max-len
+  app.use('/swagger', (req, res) => {
+    res.redirect('/swagger-ui?url=/api/swagger.json');
+  });
+
+  // swagger-editor
+  app.use('/swagger-editor', express.static(path.join(__dirname, '../../node_modules/swagger-editor-dist'))); // eslint-disable-line max-len
+  app.use('/editor', (req, res) => {
+    res.redirect('/swagger-editor?url=/api/swagger.json');
+  });
+
   app.get('*', (req, res) => {
     if (!res.headersSent) // eslint-disable-line curly
       res.sendFile(path.join(__dirname, '../../dist-client/index.html'));
