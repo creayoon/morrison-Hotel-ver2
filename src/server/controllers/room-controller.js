@@ -53,9 +53,9 @@ export default class RoomController {
   // post
   static post(req, res, cb) {
     const { body } = req;
-    const essentialNumber = ['defaultPrice', 'roomNumber', 'availableGuest', 'acceptChild'];
     const essentialString = ['roomType', 'roomSize', 'bedSize', 'blueprint', 'roomName'];
-    const essentialArray = ['facility', 'image'];
+    // const essentialNumber = ['defaultPrice', 'roomNumber', 'availableGuest', 'acceptChild'];
+    // const essentialArray = ['facility', 'image'];
 
     RoomController.validCheck(essentialString, body, essentialNumber, essentialArray)
       .then(isValid => {
@@ -143,22 +143,22 @@ export default class RoomController {
 
   // room model valid check of every single field
   static validCheck(essentialString, body, essentialNumber, essentialArray) {
-    const essentialFields;
+    // const essentialFields;
 
-    // call validchk method of each field
-    if (essentialString !== undefined) {
-      RoomController.validString(essentialString, body)
-      .then(res => {
-        if (res === true) 
-          essentialFields.push(res);
-        else
-          throw new Error('string field is not valid');
-      })
-      .catch(err => {
-        console.log(err)
-        throw err;
-      })
-    }
+    // // call validchk method of each field
+    // if (essentialString !== undefined) {
+    //   RoomController.validString(essentialString, body)
+    //   .then(res => {
+    //     if (res === true) 
+    //       essentialFields.push(res);
+    //     else
+    //       throw new Error('string field is not valid');
+    //   })
+    //   .catch(err => {
+    //     console.log(err)
+    //     throw err;
+    //   })
+    // }
 
     // if (essentialNumber !== undefined) {
     //   RoomController.validNumber(essentialString, body).then(res => {
@@ -172,32 +172,13 @@ export default class RoomController {
     //   });
     // }
 
-    console.log(essentialFields);
+    // console.log(essentialFields);
     
+    // temp
+    let essentialFields = essentialString;
     // final valid chk of each type
     return new Promise((resolve, reject) => {
-      // essentialFields.map(fieldName => {
-      //   console.log('fieldName:::', fieldName);
-      //   console.log('body:::', body);
-
-      //   if (!body.hasOwnProperty(fieldName)) return false;
-      //   if (typeof body[fieldName] !== 'string') return false;
-      //   return true;
-      // })
-      //   .reduce((a, b) => a & b);
-      essentialFields.reduce((a, b) => a & b);
-      if (!isValid) {
-        reject(new Error('is not valid:::::::'));
-      } else {
-        resolve(isValid);
-      }
-    });
-  }
-
-  static validString(essentialString, body) {
-    // string
-    return new Promise((resolve, reject) => {
-      essentialString.map(fieldName => {
+      essentialFields.map(fieldName => {
         console.log('fieldName:::', fieldName);
         console.log('body:::', body);
 
@@ -206,6 +187,8 @@ export default class RoomController {
         return true;
       })
         .reduce((a, b) => a & b);
+    
+      //   essentialFields.reduce((a, b) => a & b);
       if (!isValid) {
         reject(new Error('is not valid:::::::'));
       } else {
@@ -214,44 +197,64 @@ export default class RoomController {
     });
   }
 
-  static validNumber(essentialNumber, body) {
-    // string
-    return new Promise((resolve, reject) => {
-      essentialNumber.map(fieldName => {
-        console.log('fieldName:::', fieldName);
-        console.log('body:::', body);
+//   static validString(essentialString, body) {
+//     // string
+//     return new Promise((resolve, reject) => {
+//       essentialString.map(fieldName => {
+//         console.log('fieldName:::', fieldName);
+//         console.log('body:::', body);
 
-        if (!body.hasOwnProperty(fieldName)) return false;
-        if (typeof body[fieldName] !== 'number') return false;
-        return true;
-      })
-        .reduce((a, b) => a & b);
-      if (!isValid) {
-        reject(new Error('is not valid:::::::'));
-      } else {
-        resolve(isValid);
-      }
-    });
-  }
+//         if (!body.hasOwnProperty(fieldName)) return false;
+//         if (typeof body[fieldName] !== 'string') return false;
+//         return true;
+//       })
+//         .reduce((a, b) => a & b);
+//       if (!isValid) {
+//         reject(new Error('is not valid:::::::'));
+//       } else {
+//         resolve(isValid);
+//       }
+//     });
+//   }
 
-  static validObject(essentialArray, body) {
-    // string
-    return new Promise((resolve, reject) => {
-      essentialArray.map(fieldName => {
-        console.log('fieldName:::', fieldName);
-        console.log('body:::', body);
+//   static validNumber(essentialNumber, body) {
+//     // string
+//     return new Promise((resolve, reject) => {
+//       essentialNumber.map(fieldName => {
+//         console.log('fieldName:::', fieldName);
+//         console.log('body:::', body);
 
-        if (!body.hasOwnProperty(fieldName)) return false;
-        if (typeof body[fieldName] !== 'object') return false;
-        return true;
-      })
-        .reduce((a, b) => a & b);
-      if (!isValid) {
-        reject(new Error('is not valid:::::::'));
-      } else {
-        resolve(isValid);
-      }
-    });
-  }
+//         if (!body.hasOwnProperty(fieldName)) return false;
+//         if (typeof body[fieldName] !== 'number') return false;
+//         return true;
+//       })
+//         .reduce((a, b) => a & b);
+//       if (!isValid) {
+//         reject(new Error('is not valid:::::::'));
+//       } else {
+//         resolve(isValid);
+//       }
+//     });
+//   }
+
+//   static validObject(essentialArray, body) {
+//     // string
+//     return new Promise((resolve, reject) => {
+//       essentialArray.map(fieldName => {
+//         console.log('fieldName:::', fieldName);
+//         console.log('body:::', body);
+
+//         if (!body.hasOwnProperty(fieldName)) return false;
+//         if (typeof body[fieldName] !== 'object') return false;
+//         return true;
+//       })
+//         .reduce((a, b) => a & b);
+//       if (!isValid) {
+//         reject(new Error('is not valid:::::::'));
+//       } else {
+//         resolve(isValid);
+//       }
+//     });
+//   }
 
 }

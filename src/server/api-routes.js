@@ -1,12 +1,12 @@
 import express from 'express';
-import Controller from './controllers/controller';
+// import Controller from './controllers/controller';
 import UserController from './controllers/user-controller';
-// import RoomController from './controllers/room-controller';
+import RoomController from './controllers/room-controller';
 // import BookController from './controllers/book-controller';
 // import SellController from './controllers/sell-controller';
 
 const router = express.Router();
-router.get('/', Controller.get);
+// router.get('/', Controller.get);
 
 // user
 router.get('/users', UserController.get);
@@ -16,11 +16,11 @@ router.put('/users/:id', UserController.put);
 router.delete('/users/:id', UserController.delete);
 
 // room
-// router.get('/rooms', RoomController.get);
-// router.post('/rooms', RoomController.post);
-// router.get('/rooms/:id', RoomController.getById);
-// router.put('/rooms/:id', RoomController.put);
-// router.delete('/rooms/:id', RoomController.delete);
+router.get('/rooms', RoomController.get);
+router.post('/rooms', RoomController.post);
+router.get('/rooms/:id', RoomController.getById);
+router.put('/rooms/:id', RoomController.put);
+router.delete('/rooms/:id', RoomController.delete);
 
 // // book
 // router.get('/book', BookController.get);
