@@ -25,14 +25,14 @@ const dataUser = {
 
 test('MongoDB insert many', t => {
   MongoDB.insert(collection, dataUser, dataAlice)
-      .then(res => {
-        t.equal(2, res.insertedCount, 'should be same number');
-        t.end();
-      })
-      .catch(err => {
-        t.fail(err);
-        t.end();
-      });
+    .then(res => {
+      t.equal(2, res.insertedCount, 'should be same number');
+      t.end();
+    })
+    .catch(err => {
+      t.fail(err);
+      t.end();
+    });
 });
 
 // test('MongoDB delete many', t => {
@@ -90,14 +90,14 @@ test('MongoDB update one', t => {
   //     }));
 
   MongoDB.insert(collection, mockUpdateData)
-      .then(() => MongoDB.update(collection, condition, value))
-      .then(res => {
-        t.equal(res.matchedCount, 1, 'should be same size');
-        t.pass('success');
-        t.end();
-      })
-      .catch(err => {
-        t.fail(err);
-        t.end();
-      });
+    .then(() => MongoDB.update(collection, condition, value))
+    .then(res => {
+      t.equal(res.matchedCount, 1, 'should be same size');
+      t.pass('success');
+      t.end();
+    })
+    .catch(err => {
+      t.fail(err);
+      t.end();
+    });
 });

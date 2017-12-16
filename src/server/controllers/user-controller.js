@@ -12,43 +12,43 @@ class UserError extends Error {
 export default class UserController {
   // get all
   static get(req, res, cb) {
-		UserService.getAllUser()
-				.then(result =>{
-					res.send(200, result);
-					cb();
-				})
-				.catch(err => {
-					if (process.env.NODE_ENV === 'development')
-						res.send(500, err);
-					else 
-						res.send(500, '삭제도중 오류가 발생하였습니다');
-					cb();
-				})
-	}
-	
-	// get by id
+    UserService.getAllUser()
+      .then(result => {
+        res.send(200, result);
+        cb();
+      })
+      .catch(err => {
+        if (process.env.NODE_ENV === 'development')
+          res.send(500, err);
+        else
+          res.send(500, '삭제도중 오류가 발생하였습니다');
+        cb();
+      });
+  }
+
+  // get by id
   static getById(req, res, cb) {
     const { id } = req.params;
-    console.log('id:::::', id);
+    // console.log('id:::::', id);
     const essentialFields = ['id'];
 
-    UserController.validCheck(essentialFields, {id})
-        .then(isValid => {
-          if (!isValid) throw new UserError('Need essential argument');
-          return UserService.getUser(id);
-        })
-        .then(addUserResult => {
-          res.send(200, addUserResult);
-          cb(); // resolve(res) 아니고 cb()
-        })
-        .catch(err => {
-          if (err instanceof UserError) {
-            res.send(400, 'Need essential argument');
-            cb();
-            return;
-          }
-          cb(err);
-        });
+    UserController.validCheck(essentialFields, { id })
+      .then(isValid => {
+        if (!isValid) throw new UserError('Need essential argument');
+        return UserService.getUser(id);
+      })
+      .then(addUserResult => {
+        res.send(200, addUserResult);
+        cb(); // resolve(res) 아니고 cb()
+      })
+      .catch(err => {
+        if (err instanceof UserError) {
+          res.send(400, 'Need essential argument');
+          cb();
+          return;
+        }
+        cb(err);
+      });
   }
 
   // post
@@ -57,22 +57,22 @@ export default class UserController {
     const essentialFields = ['id', 'name', 'social', 'image'];
 
     UserController.validCheck(essentialFields, body)
-        .then(isValid => {
-          if (!isValid) throw new UserError('Need essential argument');
-          return UserService.addUser(body);
-        })
-        .then(addUserResult => {
-          res.send(200, addUserResult);
-          cb(); // resolve(res) 아니고 cb()
-        })
-        .catch(err => {
-          if (err instanceof UserError) {
-            res.send(400, 'Need essential argument');
-            cb();
-            return;
-          }
-          cb(err);
-        });
+      .then(isValid => {
+        if (!isValid) throw new UserError('Need essential argument');
+        return UserService.addUser(body);
+      })
+      .then(addUserResult => {
+        res.send(200, addUserResult);
+        cb(); // resolve(res) 아니고 cb()
+      })
+      .catch(err => {
+        if (err instanceof UserError) {
+          res.send(400, 'Need essential argument');
+          cb();
+          return err;
+        }
+        cb(err);
+      });
   }
 
   // put: input type check, find user by id, update user info
@@ -82,80 +82,79 @@ export default class UserController {
     // console.log('essentialFields:::', essentialFields);
 
     const idchk = essentialFields.indexOf('id');
-    console.log('idchk::', idchk);
+    // console.log('idchk::', idchk);
 
     // id error case
-    if (idchk == -1) {
+    if (idchk === -1) {
       return new Error('Need id for updating your personal data');
-    } 
+    }
     if (idchk >= 2) {
       return new Error('Need only one id for updating your personal data');
     }
-    
+
     UserController.validCheck(essentialFields, body)
-        .then(isValid => {
-          if (!isValid) throw new UserError('Need essential argument');
-          return UserService.updateUser(body, res);
-        })
-        .then(addUserResult => {
-          res.send(200, addUserResult);
-          cb(); // resolve(res) 아니고 cb()
-        })
-        .catch(err => {
-          if (err instanceof UserError) {
-            res.send(400, 'Need essential argument');
-            cb();
-            return;
-          }
-          cb(err);
-        });
+      .then(isValid => {
+        if (!isValid) throw new UserError('Need essential argument');
+        return UserService.updateUser(body, res);
+      })
+      .then(addUserResult => {
+        res.send(200, addUserResult);
+        cb(); // resolve(res) 아니고 cb()
+      })
+      .catch(err => {
+        if (err instanceof UserError) {
+          res.send(400, 'Need essential argument');
+          cb();
+          return err;
+        }
+        cb(err);
+      });
   }
 
   // delete
   static delete(req, res, cb) {
     // const { body } = req;
     const { id } = req.params;
-    console.log('id:::::', id);
+    // console.log('id:::::', id);
     const essentialFields = ['id'];
 
-    UserController.validCheck(essentialFields, {id})
-        .then(isValid => {
-          if (!isValid) throw new UserError('Need essential argument');
-          // return UserService.addUser(body, res)
-          return UserService.deleteUser(id, res);
-        })
-        .then(addUserResult => {
-          res.send(200, addUserResult);
-          cb(); // resolve(res) 아니고 cb()
-        })
-        .catch(err => {
-          if (err instanceof UserError) {
-            res.send(400, 'Need essential argument');
-            cb();
-            return;
-          }
-          if (process.env.NODE_ENV === 'development')
-            res.send(500, err);
-          else 
-            res.send(500, '삭제도중 오류가 발생하였습니다');
+    UserController.validCheck(essentialFields, { id })
+      .then(isValid => {
+        if (!isValid) throw new UserError('Need essential argument');
+        // return UserService.addUser(body, res)
+        return UserService.deleteUser(id, res);
+      })
+      .then(addUserResult => {
+        res.send(200, addUserResult);
+        cb(); // resolve(res) 아니고 cb()
+      })
+      .catch(err => {
+        if (err instanceof UserError) {
+          res.send(400, 'Need essential argument');
           cb();
-        });
+          return;
+        }
+        if (process.env.NODE_ENV === 'development')
+          res.send(500, err);
+        else
+          res.send(500, '삭제도중 오류가 발생하였습니다');
+        cb();
+      });
   }
 
   // user model valid check of every single field
   static validCheck(essentialFields, body) {
     return new Promise((resolve, reject) => {
-      
       const isValid = essentialFields
-          .map(fieldName => {
-            console.log('fieldName:::', fieldName)
-            console.log('body:::', body)
+        .map(fieldName => {
+          // console.log('fieldName:::', fieldName);
+          // console.log('body:::', body);
 
-            if (!body.hasOwnProperty(fieldName)) return false;
-            if (typeof body[fieldName] !== 'string') return false;
-            return true;
-          })
-          .reduce((a, b) => a & b);
+          if (!body.hasOwnProperty(fieldName)) return false;
+          if (typeof body[fieldName] !== 'string') return false;
+          return true;
+        })
+        .reduce((a, b) => a & b);
       if (!isValid) {
         reject(new Error('is not valid:::::::'));
       } else {

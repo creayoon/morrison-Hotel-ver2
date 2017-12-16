@@ -101,9 +101,9 @@ export class MongoDB {
 
   // U: updateMany
   // static update(collection, condition, value) {
-	static update(collection, value) {
+  static update(collection, value) {
     if (!collection || !value) {
-			// console.log('mongo update:' ,collection, value)
+      // console.log('mongo update:' ,collection, value)
       return Promise.reject(new Error('Invalid argument exception'));
     }
 
@@ -144,8 +144,8 @@ export class MongoDB {
 
   // D: deleteMany
   static delete(collection, condition) {
-    if (!collection || !value) {
-			// console.log('mongo update:' ,collection, value)
+    if (!collection || !condition) {
+      // console.log('mongo update:' ,collection, value)
       return Promise.reject(new Error('Invalid argument exception'));
     }
 

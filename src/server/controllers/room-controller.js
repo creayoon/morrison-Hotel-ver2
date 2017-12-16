@@ -57,7 +57,8 @@ export default class RoomController {
     // const essentialNumber = ['defaultPrice', 'roomNumber', 'availableGuest', 'acceptChild'];
     // const essentialArray = ['facility', 'image'];
 
-    RoomController.validCheck(essentialString, body, essentialNumber, essentialArray)
+    // RoomController.validCheck(essentialString, body, essentialNumber, essentialArray)
+    RoomController.validCheck(essentialString, body)
       .then(isValid => {
         if (!isValid) throw new RoomError('Need essential argument');
         return RoomService.addRoom(body);
@@ -142,14 +143,15 @@ export default class RoomController {
   }
 
   // room model valid check of every single field
-  static validCheck(essentialString, body, essentialNumber, essentialArray) {
+  // static validCheck(essentialString, body, essentialNumber, essentialArray) {
+  static validCheck(essentialString, body) {
     // const essentialFields;
 
     // // call validchk method of each field
     // if (essentialString !== undefined) {
     //   RoomController.validString(essentialString, body)
     //   .then(res => {
-    //     if (res === true) 
+    //     if (res === true)
     //       essentialFields.push(res);
     //     else
     //       throw new Error('string field is not valid');
@@ -173,21 +175,20 @@ export default class RoomController {
     // }
 
     // console.log(essentialFields);
-    
+
     // temp
     let essentialFields = essentialString;
     // final valid chk of each type
     return new Promise((resolve, reject) => {
-      essentialFields.map(fieldName => {
-        console.log('fieldName:::', fieldName);
-        console.log('body:::', body);
+      const isValid = essentialFields.map(fieldName => {
+        // console.log('fieldName:::', fieldName);
+        // console.log('body:::', body);
 
         if (!body.hasOwnProperty(fieldName)) return false;
         if (typeof body[fieldName] !== 'string') return false;
         return true;
       })
         .reduce((a, b) => a & b);
-    
       //   essentialFields.reduce((a, b) => a & b);
       if (!isValid) {
         reject(new Error('is not valid:::::::'));
