@@ -28,10 +28,10 @@ export default class RoomController {
 
   // get by id
   static getById(req, res, cb) {
-    const { id } = req.params;
+    const {id} = req.params;
     const essentialFields = ['id'];
 
-    RoomController.validCheck(essentialFields, { id })
+    RoomController.validCheck(essentialFields, {id})
       .then(isValid => {
         if (!isValid) throw new RoomError('Need essential argument');
         return RoomService.getRoom(id);
@@ -52,7 +52,7 @@ export default class RoomController {
 
   // post
   static post(req, res, cb) {
-    const { body } = req;
+    const {body} = req;
     const essentialString = ['roomType', 'roomSize', 'bedSize', 'blueprint', 'roomName'];
     // const essentialNumber = ['defaultPrice', 'roomNumber', 'availableGuest', 'acceptChild'];
     // const essentialArray = ['facility', 'image'];
@@ -79,7 +79,7 @@ export default class RoomController {
 
   // put: input type check, find room by id, update room info
   static put(req, res, cb) {
-    const { body } = req;
+    const {body} = req;
     const essentialFields = Object.keys(body);
     // console.log('essentialFields:::', essentialFields);
     const idchk = essentialFields.indexOf('id');
@@ -110,16 +110,17 @@ export default class RoomController {
         }
         cb(err);
       });
+    return true;
   }
 
   // delete
   static delete(req, res, cb) {
     // const { body } = req;
-    const { id } = req.params;
+    const {id} = req.params;
     // console.log('id:::::', id);
     const essentialFields = ['id'];
 
-    RoomController.validCheck(essentialFields, { id })
+    RoomController.validCheck(essentialFields, {id})
       .then(isValid => {
         if (!isValid) throw new RoomError('Need essential argument');
         return RoomService.deleteRoom(id, res);

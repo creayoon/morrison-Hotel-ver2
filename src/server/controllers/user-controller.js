@@ -72,6 +72,7 @@ export default class UserController {
           return err;
         }
         cb(err);
+        return false;
       });
   }
 
@@ -108,7 +109,9 @@ export default class UserController {
           return err;
         }
         cb(err);
+        return false;
       });
+    return true;
   }
 
   // delete
