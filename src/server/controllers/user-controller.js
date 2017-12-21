@@ -78,22 +78,19 @@ export default class UserController {
 
   // put: input type check, find user by id, update user info
   static put(req, res, cb) {
+    const { id } = req.params;
     const { body } = req;
     const essentialFields = Object.keys(body);
-    // console.log('essentialFields:::', essentialFields);
-
-    const idchk = essentialFields.indexOf('id');
-    // console.log('idchk::', idchk);
 
     // id error case
-    if (idchk === -1) {
+    if (id === -1) {
       return new Error('Need id for updating your personal data');
     }
-    if (idchk >= 2) {
+    if (id >= 2) {
       return new Error('Need only one id for updating your personal data');
     }
 
-    UserController.validCheck(essentialFields, body)
+    UserController.validCheck(essentialFields, id)
       .then(isValid => {
         if (!isValid) throw new UserError('Need essential argument');
         return UserService.updateUser(body, res);

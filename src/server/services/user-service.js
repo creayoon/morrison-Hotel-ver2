@@ -15,7 +15,7 @@ export default class UserService {
       });
   }
 
-  static getUser(id, res) { // eslint-disable-line no-unused-vars
+  static getUser(id) { // eslint-disable-line no-unused-vars
     return MongoDB.read('user', { id: id })
       .then(result => {
         // console.log('read result:::', result);
@@ -37,7 +37,7 @@ export default class UserService {
       });
   }
 
-  static updateUser(userInfo, res) { // eslint-disable-line no-unused-vars
+  static updateUser(userInfo) { // eslint-disable-line no-unused-vars
     const user = new User(userInfo.id, userInfo.name, userInfo.social, userInfo.image);
 
     // insert: input data count
@@ -54,7 +54,7 @@ export default class UserService {
       });
   }
 
-  static deleteUser(userId, res) { // eslint-disable-line no-unused-vars
+  static deleteUser(userId) { // eslint-disable-line no-unused-vars
     return MongoDB.delete('user', { id: userId })
       .then(result => {
         // console.log('read result:::', result);
