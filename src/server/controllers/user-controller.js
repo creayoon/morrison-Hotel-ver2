@@ -47,7 +47,7 @@ export default class UserController {
           cb();
           return;
         }
-        cb(err);
+        // cb(err);
       });
   }
 
@@ -69,9 +69,9 @@ export default class UserController {
         if (err instanceof UserError) {
           res.send(400, 'Need essential argument');
           cb();
-          return err;
+          return;
         }
-        cb(err);
+        // cb(err);
         return false;
       });
   }
@@ -106,9 +106,9 @@ export default class UserController {
         if (err instanceof UserError) {
           res.send(400, 'Need essential argument');
           cb();
-          return err;
+          return;
         }
-        cb(err);
+        // cb(err);
         return false;
       });
     return true;

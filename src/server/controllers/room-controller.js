@@ -46,7 +46,7 @@ export default class RoomController {
           cb();
           return;
         }
-        cb(err);
+        // cb(err);
       });
   }
 
@@ -73,7 +73,7 @@ export default class RoomController {
           cb();
           return;
         }
-        cb(err);
+        // cb(err);
       });
   }
 
@@ -108,7 +108,7 @@ export default class RoomController {
           cb();
           return;
         }
-        cb(err);
+        // cb(err);
       });
     return true;
   }
