@@ -48,6 +48,7 @@ export default class UserController {
           return;
         }
         // cb(err);
+        // return false; // 여기 아니래, 왜?? consistent-return 잘 모르겠다..
       });
   }
 
@@ -72,7 +73,8 @@ export default class UserController {
           return;
         }
         // cb(err);
-        return false;
+        // cb();
+        // return false;
       });
   }
 
@@ -106,7 +108,8 @@ export default class UserController {
           return;
         }
         // cb(err);
-        return false;
+        // cb();
+        // return false;
       });
     return true;
   }
