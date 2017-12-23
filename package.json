@@ -95,7 +95,7 @@
     "mongo-mock": "^2.8.0",
     "node-mocks-http": "^1.6.2",
     "react-test-renderer": "^15.6.1",
-    "sinon": "^3.2.1",
+    "sinon": "^3.3.0",
     "supertest": "^3.0.0",
     "tape": "^4.6.3"
   }
