@@ -23,7 +23,14 @@ const dataUser = {
   image: 'https://i.pinimg.com/736x/3e/0b/d9/3e0bd971ef4434d9354ee6dde37aed88--minions-cartoon-despicable-minions.jpg' // eslint-disable-line max-len
 };
 
+function deleteAll() {
+  MongoDB.delete({});
+}
+
+// delete all before insert
 test('MongoDB insert many', t => {
+  deleteAll();
+
   MongoDB.insert(collection, dataUser, dataAlice)
     .then(res => {
       t.equal(2, res.insertedCount, 'should be same number');
@@ -35,20 +42,14 @@ test('MongoDB insert many', t => {
     });
 });
 
-// test('MongoDB delete many', t => {
-//   MongoDB.insert((insertErr) => {
-//     if (insertErr) {
-//       t.fail();
-//     }
-//     MongoDB.delete((deleteErr) => {
-//       if (deleteErr) t.fail();
-//       // console.log('here');
-//       t.end();
-//     }, collection, dataAlice);
-//   }, collection, dataAlice);
-// });
+// test('MongoDB read many', t => {
 
+// }
+
+// delete all before update
 test('MongoDB update one', t => {
+  deleteAll();
+
   const mockUpdateData = JSON.parse(JSON.stringify(dataUser));
   mockUpdateData.name = 'helloworld';
   const condition = { name: 'helloworld' };
@@ -92,7 +93,7 @@ test('MongoDB update one', t => {
   MongoDB.insert(collection, mockUpdateData)
     .then(() => MongoDB.update(collection, condition, value))
     .then(res => {
-      t.equal(res.matchedCount, 1, 'should be same size');
+      t.equal(res.matchedCount, 3, 'should be same size');
       t.pass('success');
       t.end();
     })
@@ -100,4 +101,17 @@ test('MongoDB update one', t => {
       t.fail(err);
       t.end();
     });
+});
+
+test('MongoDB delete many', t => {
+  MongoDB.insert((insertErr) => {
+    if (insertErr) {
+      t.fail();
+    }
+    MongoDB.delete((deleteErr) => {
+      if (deleteErr) t.fail();
+      // console.log('here');
+      t.end();
+    }, collection, dataAlice);
+  }, collection, dataAlice);
 });

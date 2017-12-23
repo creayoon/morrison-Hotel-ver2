@@ -86,10 +86,20 @@ export default class UserController {
 
     // id error case
     if (id === -1) {
-      return new Error('Need id for updating your personal data');
+      //   return new Error('Need id for updating your personal data');
+
+      cb(new Error('Need id for updating your personal data'));
+      return;
+
+      // 이렇게 변경
+    //   res.status(400).send('Need id for updating your personal data');
+    //   cb();
+    //   return;
     }
     if (id >= 2) {
-      return new Error('Need only one id for updating your personal data');
+      // return new Error('Need only one id for updating your personal data');
+      cb(new Error('Need only one id for updating your personal data'));
+      return;
     }
 
     UserController.validCheck(essentialFields, id)
@@ -111,7 +121,7 @@ export default class UserController {
         // cb();
         // return false;
       });
-    return true;
+    return;
   }
 
   // delete
