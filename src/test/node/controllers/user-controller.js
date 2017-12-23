@@ -15,7 +15,7 @@ test('user-contoller get', t => {
       resolve(expected.data);
     });
   }
-  sinon.stub(UserService, "getAllUser").callsFake(mockGetAllUser);
+  sinon.stub(UserService, 'getAllUser').callsFake(mockGetAllUser);
 
   const req = httpMocks.createRequest({
     method: 'GET',

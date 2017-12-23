@@ -261,19 +261,7 @@ export default class RoomController {
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
 // import RoomService from '../services/room-service';
-
 
 // // error define
 // class RoomError extends Error {

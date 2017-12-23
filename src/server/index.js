@@ -6,8 +6,6 @@ import logger from 'winston';
 import apiRoutes from './api-routes';
 // import { MongoDB } from './database/mongo';
 
-// swagger
-
 
 // cb is optional
 export default (cb) => {
@@ -54,14 +52,10 @@ export default (cb) => {
     res.status(500).send('Server error');
   });
 
-  // MongoDB.insert((err) => {
-  //   if (err) console.log(err);
-  //   else console.log('-----success');
-  // }, 'book', {name: 'alice'}, {name: 'bob'});
-
   process.on('uncaughtException', evt => {
     console.log('uncaughtException: ', evt); // eslint-disable-line no-console
   });
+
 
   const port = process.env.PORT || config.port;
   const server = app.listen(port, cb ? cb : () => {

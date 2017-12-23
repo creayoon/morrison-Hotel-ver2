@@ -33,7 +33,7 @@ test('MongoDB insert many', t => {
 
   MongoDB.insert(collection, dataUser, dataAlice)
     .then(res => {
-      t.equal(2, res.insertedCount, 'should be same number');
+      t.equal(2, res.count, 'should be same number');
       t.end();
     })
     .catch(err => {
@@ -42,9 +42,17 @@ test('MongoDB insert many', t => {
     });
 });
 
-// test('MongoDB read many', t => {
-
-// }
+test('MongoDB read many', t => {
+  MongoDB.read(collection, dataUser, dataAlice)
+  .then(res => {
+    t.equal(2, res.insertedCount, 'should be same number');
+    t.end();
+  })
+  .catch(err => {
+    t.fail(err);
+    t.end();
+  });
+});
 
 // delete all before update
 test('MongoDB update one', t => {
