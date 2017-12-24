@@ -14,11 +14,16 @@ export class MongoDB {
 
   // C: insertMany
   static insert(collection, ...values) {
-    if (!collection || !values) {
-      return Promise.reject(new Error('Invalid argument exception'));
-    }
+    // if (!collection || !values) {
+    //   return Promise.reject(new Error('Invalid argument exception'));
+    // }
 
     return new Promise((resolve, reject) => {
+      if (!collection || !values) {
+        reject(new Error('Invalid argument exception'));
+        return;
+      }
+
       MongoClient.connect(MongoConfig.url, (connErr, db) => {
         if (connErr) {
           reject(connErr);
@@ -43,6 +48,19 @@ export class MongoDB {
               return;
             }
 
+            // data 형식이 object가 아닌경우
+            values.forEach(data => {
+              if (typeof data !== 'object') {
+                reject(new Error('wrong type of data is inserted'));
+                return;
+              }
+
+              // id가 없는 경우
+              if (!data.hasOwnProperty('id')) {
+                reject(new Error('id is not assigned'));
+                return;
+              }
+            });
             resolve(res);
           });
         });

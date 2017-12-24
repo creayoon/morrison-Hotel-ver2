@@ -3,9 +3,43 @@ import test from 'tape';
 import { MongoDB } from '../../../server/database/mongo';
 
 
-const collection = 'testCollection';
+// test datas ------------------
+// right cases ----------
+const dataId = {
+  id: 'cookie'
+};
 
-const dataAlice = {
+const dataUser = {
+  id: 'cookie',
+  name: 'minions Bob',
+  social: 'facebook',
+  image: 'https://minions.jpg'
+};
+
+const dataUpdateMany = [
+  {
+    id: 'cookie',
+    name: 'spider man',
+    social: 'instagram',
+    image: 'https://minions.jpg'
+  },
+  {
+    id: 'bread',
+    name: 'bet man',
+    social: 'facebook',
+    image: 'https://minions111.jpg'
+  }
+];
+
+// wrong cases ----------
+// const dataString = 'testCollection';
+const dataNoIdUser = {
+  name: 'minions Bob',
+  social: 'facebook',
+  image: 'https://minions.jpg'
+};
+
+const dataNames = {
   name: 'alice',
   name2: '222',
   name3: '333',
@@ -17,23 +51,31 @@ const dataAlice = {
   name9: '999'
 };
 
-const dataUser = {
-  name: 'minions Bob',
-  social: 'facebook',
-  image: 'https://i.pinimg.com/736x/3e/0b/d9/3e0bd971ef4434d9354ee6dde37aed88--minions-cartoon-despicable-minions.jpg' // eslint-disable-line max-len
-};
 
+// moking data ------------------
+const mockUpdateData = JSON.parse(JSON.stringify(dataUser));
+mockUpdateData.name = 'helloworld';
+const condition = { name: 'helloworld' };
+const value = { social: 'google' };
+
+
+
+// test codes ------------------
+// delete all test data
 function deleteAll() {
   MongoDB.delete({});
 }
 
-// delete all before insert
+const collection = 'user';
+
+
+// insert
 test('MongoDB insert many', t => {
   deleteAll();
 
-  MongoDB.insert(collection, dataUser, dataAlice)
+  MongoDB.insert(collection, dataId, dataUser)
     .then(res => {
-      t.equal(2, res.count, 'should be same number');
+      t.equal(2, res.insertedCount, 'should be same number');
       t.end();
     })
     .catch(err => {
@@ -42,84 +84,86 @@ test('MongoDB insert many', t => {
     });
 });
 
-test('MongoDB read many', t => {
-  MongoDB.read(collection, dataUser, dataAlice)
-  .then(res => {
-    t.equal(2, res.insertedCount, 'should be same number');
-    t.end();
-  })
-  .catch(err => {
-    t.fail(err);
-    t.end();
-  });
-});
-
-// delete all before update
-test('MongoDB update one', t => {
+// insert wrong data cases
+test('MongoDB insert many with wrong datas', t => {
   deleteAll();
 
-  const mockUpdateData = JSON.parse(JSON.stringify(dataUser));
-  mockUpdateData.name = 'helloworld';
-  const condition = { name: 'helloworld' };
-  const value = { social: 'google' };
+  MongoDB.insert(collection, dataNoIdUser, dataNames)
+    .then(res => {
+      t.equal(2, res.insertedCount, 'should be same number');
+      t.end();
+    })
+    .catch(err => {
+      t.fail(err);
+      t.end();
+    });
+});
 
-  // const tupleList = [
-  //   {
-  //     data: {},
-  //     condition: {},
-  //     value: {}
-  //   },
-  //   {
-  //     data: {},
-  //     condition: {},
-  //     value: {}
-  //   },
-  //   {
-  //     data: {},
-  //     condition: {},
-  //     value: {}
-  //   },
-  //   {
-  //     data: {},
-  //     condition: {},
-  //     value: {}
-  //   }
-  // ];
-  //
-  // tupleList.map(tuple => MongoDB.insert(collection, mockUpdateData)
-  //     .then(() => MongoDB.update(collection, condition, value))
-  //     .then(res => {
-  //       t.equal(res.matchedCount, 1, "should be same size");
-  //       t.pass('success');
-  //       t.end();
-  //     })
-  //     .catch(err => {
-  //       t.fail(err);
-  //       t.end();
-  //     }));
+
+// read
+test('MongoDB read many', t => {
+  MongoDB.read(collection, { id: 'cookie' })
+    .then(res => {
+      console.log(res);
+      t.equal(2, res.length, 'should be same number');
+      t.end();
+    })
+    .catch(err => {
+      t.fail(err);
+      t.end();
+    });
+});
+
+// mongoDB read할때 error case가 있나..?
+
+
+// update one
+test('MongoDB update one', t => {
+  deleteAll();
 
   MongoDB.insert(collection, mockUpdateData)
     .then(() => MongoDB.update(collection, condition, value))
     .then(res => {
-      t.equal(res.matchedCount, 3, 'should be same size');
+      t.equal(2, res.matchedCount, 'should be same size'); // count each field
+      // t.pass('success');
+      t.end();
+    })
+    .catch(err => {
+      t.fail(err);
+      t.end();
+    });
+});
+
+// update many
+test('MongoDB update many', t => {
+  deleteAll();
+
+  dataUpdateMany.map(() => MongoDB.insert(collection, mockUpdateData)
+    .then(() => MongoDB.update(collection, condition, value))
+    .then(res => {
+      console.log(mockUpdateData)
+      
+      t.equal(2, res.matchedCount, "should be same size");
       t.pass('success');
       t.end();
     })
     .catch(err => {
       t.fail(err);
       t.end();
-    });
+    })
+  );
 });
 
-test('MongoDB delete many', t => {
-  MongoDB.insert((insertErr) => {
-    if (insertErr) {
-      t.fail();
-    }
-    MongoDB.delete((deleteErr) => {
-      if (deleteErr) t.fail();
-      // console.log('here');
-      t.end();
-    }, collection, dataAlice);
-  }, collection, dataAlice);
-});
+// delete
+// test('MongoDB delete many', t => {
+//   MongoDB.insert((insertErr) => {
+//     if (insertErr) {
+//       t.fail();
+//     }
+//     MongoDB.delete((deleteErr) => {
+//       if (deleteErr) t.fail();
+//       // console.log('here');
+//       t.end();
+//     }, collection, dataAlice);
+//   }, collection, dataAlice);
+// });
