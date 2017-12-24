@@ -84,11 +84,16 @@ export class MongoDB {
 
   // R: find
   static read(collection, query) {
-    if (!collection || !query) {
-      return new Promise.reject(new Error('Error')); // eslint-disable-line new-cap
-    }
+    // if (!collection || !query) {
+    //   return new Promise.reject(new Error('Error')); // eslint-disable-line new-cap
+    // }
 
     return new Promise((resolve, reject) => {
+      if (!collection || !query) {
+        reject(new Error('Invalid argument exception'));
+        return;
+      }
+
       MongoClient.connect(MongoConfig.url, (connErr, db) => {
         if (connErr) {
           db.close();
@@ -119,13 +124,19 @@ export class MongoDB {
 
   // U: updateMany
   // static update(collection, condition, value) {
-  static update(collection, value) {
-    if (!collection || !value) {
-      // console.log('mongo update:' ,collection, value)
-      return Promise.reject(new Error('Invalid argument exception'));
-    }
+  static update(collection, query, value) {
+    // if (!collection || !value) {
+    //   // console.log('mongo update:' ,collection, value)
+    //   return Promise.reject(new Error('Invalid argument exception'));
+    // }
 
     return new Promise((resolve, reject) => {
+      if (!collection || !query || !value) {
+        console.log(collection, query, value);
+        reject(new Error('Invalid argument exception'));
+        return;
+      }
+
       MongoClient.connect(MongoConfig.url, (connErr, db) => {
         if (connErr) {
           reject(connErr);
@@ -135,12 +146,16 @@ export class MongoDB {
       });
     })
       .then(db => new Promise((resolve, reject) => {
+        console.log(db);
+        
         // TODO need to generalization
         // const filter = { id: condition.id };
-        const filter = { id: value.id };
-        const update = { $set: { social: value.social, image: value.image } };
 
-        db.collection(collection).updateMany(filter, update, (dbErr, res) => {
+        // const filter = { id: value.id };
+        // const update = { $set: { social: value.social, image: value.image } };
+        const update = { $set: value };
+
+        db.collection(collection).updateMany(query, update, (dbErr, res) => {
           db.close();
           // err
           if (dbErr) {
@@ -161,13 +176,18 @@ export class MongoDB {
   }
 
   // D: deleteMany
-  static delete(collection, condition) {
-    if (!collection || !condition) {
-      // console.log('mongo update:' ,collection, value)
-      return Promise.reject(new Error('Invalid argument exception'));
-    }
+  static delete(collection, query) {
+    // if (!collection || !query) {
+    //   // console.log('mongo update:' ,collection, value)
+    //   return Promise.reject(new Error('Invalid argument exception'));
+    // }
 
     return new Promise((resolve, reject) => {
+      if (!collection || !query) {
+        reject(new Error('Invalid argument exception'));
+        return;
+      }
+
       MongoClient.connect(MongoConfig.url, (connErr, db) => {
         if (connErr) {
           reject(connErr);
@@ -178,11 +198,11 @@ export class MongoDB {
     })
       .then(db => new Promise((resolve, reject) => {
         // TODO need to generalization
-        // const filter = { id: condition.id };
+        // const filter = { id: query.id };
         // const filter = { id: value.id };
         // const update = { $set: { social: value.social, image: value.image } };
 
-        db.collection(collection).deleteMany(condition, (dbErr, res) => {
+        db.collection(collection).deleteMany(query, (dbErr, res) => {
           db.close();
           // err
           if (dbErr) {

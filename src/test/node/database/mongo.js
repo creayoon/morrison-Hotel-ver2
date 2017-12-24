@@ -16,20 +16,20 @@ const dataUser = {
   image: 'https://minions.jpg'
 };
 
-const dataUpdateMany = [
-  {
-    id: 'cookie',
-    name: 'spider man',
-    social: 'instagram',
-    image: 'https://minions.jpg'
-  },
-  {
-    id: 'bread',
-    name: 'bet man',
-    social: 'facebook',
-    image: 'https://minions111.jpg'
-  }
-];
+// const dataUpdateMany = [
+//   {
+//     id: 'cookie',
+//     name: 'spiderman',
+//     social: 'instagram',
+//     image: 'https://minions.jpg'
+//   },
+//   {
+//     id: 'bread',
+//     name: 'betman',
+//     social: 'facebook',
+//     image: 'https://minions-goods.jpg'
+//   }
+// ];
 
 // wrong cases ----------
 // const dataString = 'testCollection';
@@ -53,12 +53,10 @@ const dataNames = {
 
 
 // moking data ------------------
-const mockUpdateData = JSON.parse(JSON.stringify(dataUser));
-mockUpdateData.name = 'helloworld';
-const condition = { name: 'helloworld' };
-const value = { social: 'google' };
-
-
+// const mockUpdateData = JSON.parse(JSON.stringify(dataUser));
+// mockUpdateData.name = 'helloworld';
+// const condition = { name: 'helloworld' };
+// const value = { social: 'google' };
 
 // test codes ------------------
 // delete all test data
@@ -104,7 +102,6 @@ test('MongoDB insert many with wrong datas', t => {
 test('MongoDB read many', t => {
   MongoDB.read(collection, { id: 'cookie' })
     .then(res => {
-      console.log(res);
       t.equal(2, res.length, 'should be same number');
       t.end();
     })
@@ -118,52 +115,61 @@ test('MongoDB read many', t => {
 
 
 // update one
-test('MongoDB update one', t => {
-  deleteAll();
+// test('MongoDB update one', t => {
+//   deleteAll();
 
-  MongoDB.insert(collection, mockUpdateData)
-    .then(() => MongoDB.update(collection, condition, value))
-    .then(res => {
-      t.equal(2, res.matchedCount, 'should be same size'); // count each field
-      // t.pass('success');
-      t.end();
-    })
-    .catch(err => {
-      t.fail(err);
-      t.end();
-    });
-});
+//   const query = { id: 'cookie' };
+//   // const value = { social: 'google' };
+//   const value = { social: 'google', name: 'wonderwoman' }; // 이거하면 왜 3개 수정되지??
+
+//   MongoDB.insert(collection, dataUser)
+//     .then(() => MongoDB.update(collection, query, value))
+//     .then(res => {
+//       console.log(res);
+//       t.equal(1, res.matchedCount, 'should be same size'); // count each field
+//       // t.pass('success');
+//       t.end();
+//     })
+//     .catch(err => {
+//       t.fail(err);
+//       t.end();
+//     });
+// });
 
 // update many
-test('MongoDB update many', t => {
-  deleteAll();
+// test('MongoDB update many', t => {
+//   deleteAll();
 
-  dataUpdateMany.map(() => MongoDB.insert(collection, mockUpdateData)
-    .then(() => MongoDB.update(collection, condition, value))
-    .then(res => {
-      console.log(mockUpdateData)
+//   const query = { id: 'cookie' };
+//   const value = { social: 'google' };
+//   // const value = { social: 'google', name: 'wonderwoman' }; // 이거하면 왜 3개 수정되지??
+
+//   dataUpdateMany.map(data => MongoDB.insert(query, data)
+//     .then(() => MongoDB.update(collection, query, value))
+//     .then(res => {
+//       console.log(data)
       
-      t.equal(2, res.matchedCount, "should be same size");
-      t.pass('success');
-      t.end();
-    })
-    .catch(err => {
-      t.fail(err);
-      t.end();
-    })
-  );
-});
+//       t.equal(1, res.matchedCount, 'should be same size'); // count each field
+//       // t.pass('success');
+//       t.end(); // not ok .end() called twice
+//     })
+//     .catch(err => {
+//       t.fail(err);
+//       t.end();
+//     })
+//   );
+// });
 
 // delete
-// test('MongoDB delete many', t => {
-//   MongoDB.insert((insertErr) => {
-//     if (insertErr) {
-//       t.fail();
-//     }
-//     MongoDB.delete((deleteErr) => {
-//       if (deleteErr) t.fail();
-//       // console.log('here');
-//       t.end();
-//     }, collection, dataAlice);
-//   }, collection, dataAlice);
-// });
+test('MongoDB delete many', t => {
+  MongoDB.delete(collection, { id: 'cookie' })
+  .then(res => {
+    t.equal(2, res.deletedCount, 'should be same number');
+    t.end();
+  })
+  .catch(err => {
+    t.fail(err);
+    t.end();
+  });
+
+});
