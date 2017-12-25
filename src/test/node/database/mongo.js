@@ -73,7 +73,7 @@ test('MongoDB insert many', t => {
 
   MongoDB.insert(collection, dataId, dataUser)
     .then(res => {
-      t.equal(2, res.insertedCount, 'should be same number');
+      t.equal(res.insertedCount, 2, 'should be same number');
       t.end();
     })
     .catch(err => {
@@ -88,7 +88,7 @@ test('MongoDB insert many with wrong datas', t => {
 
   MongoDB.insert(collection, dataNoIdUser, dataNames)
     .then(res => {
-      t.equal(2, res.insertedCount, 'should be same number');
+      t.equal(res.insertedCount, 2, 'should be same number');
       t.end();
     })
     .catch(err => {
@@ -102,7 +102,7 @@ test('MongoDB insert many with wrong datas', t => {
 test('MongoDB read many', t => {
   MongoDB.read(collection, { id: 'cookie' })
     .then(res => {
-      t.equal(2, res.length, 'should be same number');
+      t.equal(res.length, 2, 'should be same number');
       t.end();
     })
     .catch(err => {
@@ -164,7 +164,7 @@ test('MongoDB read many', t => {
 test('MongoDB delete many', t => {
   MongoDB.delete(collection, { id: 'cookie' })
   .then(res => {
-    t.equal(2, res.deletedCount, 'should be same number');
+    t.equal(res.deletedCount, 2, 'should be same number');
     t.end();
   })
   .catch(err => {

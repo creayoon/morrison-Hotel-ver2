@@ -4,33 +4,57 @@ import httpMocks from 'node-mocks-http';
 import UserController from '../../../server/controllers/user-controller';
 import UserService from '../../../server/services/user-service';
 
-test('user-contoller get', t => {
-  const expected = {
-    status: 200,
-    data: 'body'
-  };
 
+
+// mock ------------------
+const expected = {
+  status: 200,
+  data: 'body'
+};
+
+const res = httpMocks.createResponse();
+
+const data = res._getData(); // eslint-disable-line no-underscore-dangle
+
+
+// test ------------------
+test('user-contoller get', t => {
   function mockGetAllUser() {
     return new Promise((resolve) => {
       resolve(expected.data);
     });
   }
-  sinon.stub(UserService, 'getAllUser').callsFake(mockGetAllUser);
-
+  
   const req = httpMocks.createRequest({
     method: 'GET',
     url: '/api/users/get'
   });
-  const res = httpMocks.createResponse();
+  
+  sinon.stub(UserService, 'getAllUser').callsFake(mockGetAllUser);
+  
 
   UserController.get(req, res, () => {
-    const data = res._getData(); // eslint-disable-line no-underscore-dangle
-
     t.equal(res.statusCode, expected.status, 'should be same status');
     t.equal(data, expected.data, 'should be same data');
     t.end();
   });
 
-  UserService.getAllUser.restore();
+  UserService.getAllUser.restore(); // The original function restored
 });
 
+// test('user-contoller getUserById', t => {
+//   function mockGetUser(id) {
+//     return new Promise((resolve) => {
+//       resolve(expected.data);
+//     });
+//   }
+//   sinon.stub(UserService, 'getUser').callsFake(mockGetUser);
+
+//   UserController.get(req, res, () => {
+//     t.equal(res.statusCode, expected.status, 'should be same status');
+//     t.equal(data, expected.data, 'should be same data');
+//     t.end();
+//   });
+
+//   UserService.getUser.restore();
+// });
