@@ -132,7 +132,7 @@ export class MongoDB {
 
     return new Promise((resolve, reject) => {
       if (!collection || !query || !value) {
-        console.log(collection, query, value);
+        // console.log(collection, query, value);
         reject(new Error('Invalid argument exception'));
         return;
       }
@@ -146,8 +146,8 @@ export class MongoDB {
       });
     })
       .then(db => new Promise((resolve, reject) => {
-        console.log(db);
-        
+        // console.log(db);
+
         // TODO need to generalization
         // const filter = { id: condition.id };
 

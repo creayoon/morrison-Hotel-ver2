@@ -14,7 +14,6 @@ const expected = {
 
 const res = httpMocks.createResponse();
 
-const data = res._getData(); // eslint-disable-line no-underscore-dangle
 
 
 // test ------------------
@@ -24,37 +23,48 @@ test('user-contoller get', t => {
       resolve(expected.data);
     });
   }
-  
+  sinon.stub(UserService, 'getAllUser').callsFake(mockGetAllUser);
+
   const req = httpMocks.createRequest({
     method: 'GET',
-    url: '/api/users/get'
+    url: '/api/users'
   });
-  
-  sinon.stub(UserService, 'getAllUser').callsFake(mockGetAllUser);
-  
 
   UserController.get(req, res, () => {
+    const data = res._getData(); // eslint-disable-line no-underscore-dangle
+
     t.equal(res.statusCode, expected.status, 'should be same status');
     t.equal(data, expected.data, 'should be same data');
     t.end();
   });
 
-  UserService.getAllUser.restore(); // The original function restored
+  UserService.getAllUser.restore();
 });
 
-// test('user-contoller getUserById', t => {
-//   function mockGetUser(id) {
-//     return new Promise((resolve) => {
-//       resolve(expected.data);
-//     });
-//   }
-//   sinon.stub(UserService, 'getUser').callsFake(mockGetUser);
+test('user-contoller getById', t => {
+  function mockgetUser() {
+    return new Promise((resolve) => {
+      resolve(expected.data);
+    });
+  }
+  sinon.stub(UserService, 'getUser').callsFake(mockgetUser);
 
-//   UserController.get(req, res, () => {
-//     t.equal(res.statusCode, expected.status, 'should be same status');
-//     t.equal(data, expected.data, 'should be same data');
-//     t.end();
-//   });
+  const req = httpMocks.createRequest({
+    method: 'GET',
+    url: `/api/users/:id`,
+    params: {
+      id: 'cookie'
+    }
+  });
 
-//   UserService.getUser.restore();
-// });
+  UserController.getById(req, res, () => {
+    const data = res._getData(); // eslint-disable-line no-underscore-dangle
+    console.log(data);
+
+    t.equal(res.statusCode, expected.status, 'should be same status');
+    t.equal(data, expected.data, 'should be same data');
+    t.end();
+  });
+
+  UserService.getUser.restore();
+});

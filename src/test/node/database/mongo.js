@@ -148,7 +148,7 @@ test('MongoDB read many', t => {
 //     .then(() => MongoDB.update(collection, query, value))
 //     .then(res => {
 //       console.log(data)
-      
+
 //       t.equal(1, res.matchedCount, 'should be same size'); // count each field
 //       // t.pass('success');
 //       t.end(); // not ok .end() called twice
@@ -171,5 +171,4 @@ test('MongoDB delete many', t => {
     t.fail(err);
     t.end();
   });
-
 });
