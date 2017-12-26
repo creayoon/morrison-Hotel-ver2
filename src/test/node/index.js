@@ -4,6 +4,7 @@ require('source-map-support').install();
 // import './server';
 // import './controllers/controller';
 import './controllers/user-controller';
-// import './database/mongo';
+import './services/user-service';
+import './database/mongo';
 // import './models/user';
 // import './models/room';
